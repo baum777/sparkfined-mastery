@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "@/hooks/use-toast";
 
-const CONFIRM_TEXT = "DELETE";
+const CONFIRM_TEXT = "RESET";
 
 export function FactoryReset() {
   const [confirmValue, setConfirmValue] = useState("");
@@ -75,7 +75,7 @@ export function FactoryReset() {
 
           <div className="py-2">
             <Label htmlFor="confirm-reset" className="sr-only">
-              Type DELETE to confirm
+              Type RESET to confirm
             </Label>
             <Input
               id="confirm-reset"
