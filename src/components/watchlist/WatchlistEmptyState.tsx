@@ -1,4 +1,4 @@
-import { Eye, Plus, LineChart } from 'lucide-react';
+import { Eye, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface WatchlistEmptyStateProps {
@@ -15,18 +15,16 @@ export function WatchlistEmptyState({ onAddClick }: WatchlistEmptyStateProps) {
       <p className="text-muted-foreground max-w-sm mb-6">
         Add symbols you're monitoring for potential trades. Track trends and jump into analysis quickly.
       </p>
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Button onClick={onAddClick} data-testid="watchlist-add-first">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Your First Symbol
-        </Button>
-        <Button variant="outline" asChild>
-          <a href="/chart">
-            <LineChart className="h-4 w-4 mr-2" />
-            Browse Chart
-          </a>
-        </Button>
-      </div>
+      <Button onClick={onAddClick} data-testid="watchlist-add-first">
+        <Plus className="h-4 w-4 mr-2" />
+        Add Your First Symbol
+      </Button>
+      <p 
+        className="text-xs text-muted-foreground mt-4"
+        data-testid="watchlist-next-step-hint"
+      >
+        Next step: Add a symbol → track its trend and jump into analysis
+      </p>
     </div>
   );
 }
