@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Info, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const HINT_KEY = "chart-params-hint-dismissed";
 
@@ -22,25 +23,25 @@ export function ChartParamsHint() {
   if (!visible) return null;
 
   return (
-    <div 
-      className="flex items-center gap-3 p-3 rounded-lg bg-accent/10 border border-accent/20 text-sm"
-      role="status"
-      aria-live="polite"
+    <Alert 
+      className="flex items-center gap-3 pr-12"
+      data-testid="chart-params-hint"
     >
-      <Info className="h-4 w-4 text-accent shrink-0" aria-hidden="true" />
-      <p className="flex-1 text-muted-foreground">
+      <Info className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <AlertDescription className="flex-1">
         <span className="font-medium text-foreground">Default symbol loaded.</span>{" "}
         Select a different asset from your watchlist to analyze.
-      </p>
+      </AlertDescription>
       <Button
         variant="ghost"
         size="sm"
         onClick={handleDismiss}
-        className="h-7 w-7 p-0 shrink-0"
+        className="absolute right-2 top-2 h-7 w-7 p-0 focus-visible:ring-offset-background"
         aria-label="Dismiss hint"
+        data-testid="chart-params-hint-dismiss"
       >
         <X className="h-4 w-4" />
       </Button>
-    </div>
+    </Alert>
   );
 }

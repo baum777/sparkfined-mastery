@@ -14,7 +14,11 @@ export function ChartToolbar() {
       aria-label="Chart workflow steps"
     >
       {steps.map((step, index) => (
-        <div key={step.label} className="flex items-center gap-2">
+        <div 
+          key={step.label} 
+          className="flex items-center gap-2"
+          data-testid={`chart-workflow-step-${step.label.toLowerCase()}`}
+        >
           <div 
             className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-background/50 text-sm"
             title={step.hint}
