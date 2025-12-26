@@ -3,6 +3,13 @@ import { NavLink } from "@/components/NavLink";
 import { primaryNavItems } from "@/config/navigation";
 import { cn } from "@/lib/utils";
 
+function isNavItemActive(item: typeof primaryNavItems[0], pathname: string): boolean {
+  if (item.activeRoutes) {
+    return item.activeRoutes.includes(pathname);
+  }
+  return pathname === item.path;
+}
+
 export function MobileBottomNav() {
   const location = useLocation();
 
@@ -13,7 +20,7 @@ export function MobileBottomNav() {
     >
       <div className="flex h-16 items-center justify-around px-2">
         {primaryNavItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = isNavItemActive(item, location.pathname);
           return (
             <NavLink
               key={item.path}

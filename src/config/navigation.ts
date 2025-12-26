@@ -4,7 +4,9 @@ import {
   GraduationCap, 
   LineChart, 
   Bell, 
-  Settings 
+  Settings,
+  Eye,
+  Sparkles,
 } from "lucide-react";
 
 export interface NavItem {
@@ -12,6 +14,8 @@ export interface NavItem {
   path: string;
   icon: React.ComponentType<{ className?: string }>;
   testId: string;
+  /** Routes that should also highlight this nav item as active */
+  activeRoutes?: string[];
 }
 
 export const primaryNavItems: NavItem[] = [
@@ -38,6 +42,7 @@ export const primaryNavItems: NavItem[] = [
     path: "/chart",
     icon: LineChart,
     testId: "nav-chart",
+    activeRoutes: ["/chart", "/replay"],
   },
   {
     title: "Alerts",
@@ -50,5 +55,20 @@ export const primaryNavItems: NavItem[] = [
     path: "/settings",
     icon: Settings,
     testId: "nav-settings",
+  },
+];
+
+export const secondaryNavItems: NavItem[] = [
+  {
+    title: "Watchlist",
+    path: "/watchlist",
+    icon: Eye,
+    testId: "nav-watchlist",
+  },
+  {
+    title: "Oracle",
+    path: "/oracle",
+    icon: Sparkles,
+    testId: "nav-oracle",
   },
 ];
