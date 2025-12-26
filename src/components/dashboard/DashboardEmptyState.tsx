@@ -14,7 +14,13 @@ export function DashboardEmptyState() {
       <div className="space-y-2">
         <h2 className="text-xl font-semibold">Welcome to Sparkfined</h2>
         <p className="max-w-sm text-muted-foreground">
-          Your journey from degen to mastery starts here. Log your first trade to unlock insights and tracking.
+          Your journey from degen to mastery starts here.
+        </p>
+        <p 
+          className="text-sm text-muted-foreground/80"
+          data-testid="dashboard-next-step-hint"
+        >
+          <span className="font-medium text-foreground">Next step:</span> Log your first trade → unlock daily snapshots and insights
         </p>
       </div>
       <Button asChild data-testid="dashboard-start-cta">

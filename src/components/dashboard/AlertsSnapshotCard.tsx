@@ -22,7 +22,7 @@ export function AlertsSnapshotCard({ triggeredCount = 0 }: AlertsSnapshotCardPro
           {hasTriggered && (
             <Badge 
               variant="destructive" 
-              className="text-xs animate-pulse"
+              className="text-xs"
               data-testid="alerts-triggered-badge"
             >
               {triggeredCount} Triggered
@@ -31,7 +31,14 @@ export function AlertsSnapshotCard({ triggeredCount = 0 }: AlertsSnapshotCardPro
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        {!hasTriggered && (
+        {hasTriggered ? (
+          <p 
+            className="text-sm font-medium text-destructive"
+            data-testid="alerts-triggered-message"
+          >
+            {triggeredCount} {triggeredCount === 1 ? 'alert needs' : 'alerts need'} your attention
+          </p>
+        ) : (
           <p className="text-sm text-muted-foreground">
             No alerts triggered today.
           </p>
