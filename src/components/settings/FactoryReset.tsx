@@ -89,7 +89,7 @@ export function FactoryReset() {
           </div>
 
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel data-testid="settings-reset-cancel-btn">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleReset}
               disabled={!isConfirmValid}
