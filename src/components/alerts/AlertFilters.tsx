@@ -24,25 +24,29 @@ export function AlertFilters({ filter, onFilterChange, onClear, resultsCount }: 
       role="group"
       aria-label="Alert filters"
     >
-      {FILTER_OPTIONS.map((option) => (
-        <Button
-          key={option.value}
-          variant={filter === option.value ? 'secondary' : 'ghost'}
-          size="sm"
-          onClick={() => onFilterChange(option.value)}
-          aria-pressed={filter === option.value}
-          data-testid={`filter-${option.value}`}
-        >
-          {option.label}
-        </Button>
-      ))}
+      {FILTER_OPTIONS.map((option) => {
+        const isActive = filter === option.value;
+        return (
+          <Button
+            key={option.value}
+            variant={isActive ? 'secondary' : 'ghost'}
+            size="sm"
+            onClick={() => onFilterChange(option.value)}
+            aria-pressed={isActive}
+            data-testid={`filter-${option.value}`}
+            className={isActive ? 'ring-1 ring-ring' : ''}
+          >
+            {option.label}
+          </Button>
+        );
+      })}
 
       {filter !== 'all' && (
         <Button
           variant="ghost"
           size="sm"
           onClick={onClear}
-          className="text-muted-foreground"
+          className="text-xs text-muted-foreground hover:text-foreground"
           aria-label="Clear filter"
           data-testid="filter-clear"
         >
@@ -51,9 +55,12 @@ export function AlertFilters({ filter, onFilterChange, onClear, resultsCount }: 
         </Button>
       )}
 
-      <Badge variant="secondary" className="ml-auto">
+      <span 
+        className="ml-auto text-xs text-muted-foreground"
+        data-testid="alerts-results-count"
+      >
         {resultsCount} {resultsCount === 1 ? 'alert' : 'alerts'}
-      </Badge>
+      </span>
     </div>
   );
 }
