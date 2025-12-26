@@ -33,7 +33,8 @@ export function useWatchlist() {
   const [items, setItems] = useState<WatchlistItem[]>(MOCK_WATCHLIST);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Sync selected from URL on mount
+  // Sync selected from URL on mount only (empty deps = no loops)
+  // One-way read: URL → state on initial load; state → URL on user selection
   useEffect(() => {
     const urlSelected = searchParams.get('selected');
     if (urlSelected) {
@@ -42,7 +43,8 @@ export function useWatchlist() {
         setSelectedId(found.id);
       }
     }
-  }, []); // Only on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Intentionally empty: read URL once on mount to avoid loops
 
   // Update URL when selection changes
   const selectItem = useCallback(

@@ -33,8 +33,11 @@ export function TrendPill({ trend, relevance }: TrendPillProps) {
   return (
     <Badge
       variant="outline"
-      className={cn('gap-1 font-medium', config.className)}
+      className={cn('gap-1.5 font-medium', config.className)}
+      data-testid="trend-pill"
     >
+      <span className="text-muted-foreground">Trend</span>
+      <span className="opacity-50">·</span>
       <Icon className="h-3 w-3" />
       <span>{config.label}</span>
       {relevance !== undefined && (
