@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { OracleFilter } from "@/features/oracle/types";
 
 interface OracleFiltersProps {
@@ -12,7 +13,7 @@ interface OracleFiltersProps {
 }
 
 const FILTER_LABELS: Record<OracleFilter, string> = {
-  all: 'All themes',
+  all: 'All',
   new: 'New',
   read: 'Read',
 };
@@ -30,6 +31,7 @@ export function OracleFilters({ filter, onFilterChange, counts }: OracleFiltersP
           onClick={() => onFilterChange(f)}
           role="tab"
           aria-selected={filter === f}
+          className={cn(filter === f && 'ring-1 ring-ring')}
           data-testid={`oracle-filter-${f}`}
         >
           {FILTER_LABELS[f]}
