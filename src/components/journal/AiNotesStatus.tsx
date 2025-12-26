@@ -35,14 +35,17 @@ export function AiNotesStatus({ status }: AiNotesStatusProps) {
   const config = STATUS_CONFIG[status];
 
   return (
-    <Badge
-      variant="outline"
-      className={`gap-1 px-2 py-0.5 text-xs font-normal ${config.className}`}
-      title={config.description}
-      data-testid="ai-notes-status"
-    >
-      {config.icon}
-      {config.label}
-    </Badge>
+    <div className="flex items-center gap-2" data-testid="ai-notes-status">
+      <Badge
+        variant="outline"
+        className={`gap-1 px-2 py-0.5 text-xs font-normal ${config.className}`}
+      >
+        {config.icon}
+        {config.label}
+      </Badge>
+      <span className="text-xs text-muted-foreground">
+        {config.description}
+      </span>
+    </div>
   );
 }
