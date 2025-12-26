@@ -31,6 +31,7 @@ export default function SettingsPage() {
         title="Appearance"
         description="Customize how the app looks"
         priority
+        data-testid="settings-section-appearance"
       >
         <ThemeToggle />
       </SettingsSection>
@@ -40,6 +41,7 @@ export default function SettingsPage() {
         title="Backup & Restore"
         description="Export your data or restore from a backup"
         priority
+        data-testid="settings-section-backup"
       >
         <DataExportImport />
       </SettingsSection>
@@ -49,9 +51,15 @@ export default function SettingsPage() {
         title="Preferences"
         description="General app settings"
         priority
+        data-testid="settings-section-preferences"
       >
-        <p className="text-sm text-muted-foreground italic">
-          More preferences coming soon — notifications, default views, and display options.
+        <div className="flex items-center gap-2">
+          <span className="rounded border border-muted-foreground/30 bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+            Coming soon
+          </span>
+        </div>
+        <p className="text-sm text-muted-foreground italic mt-2">
+          Notifications, default views, and display options.
         </p>
       </SettingsSection>
 
@@ -60,6 +68,7 @@ export default function SettingsPage() {
         title="Danger zone"
         description="Irreversible actions"
         className="border-destructive/30"
+        data-testid="settings-section-danger"
       >
         <FactoryReset />
       </SettingsSection>

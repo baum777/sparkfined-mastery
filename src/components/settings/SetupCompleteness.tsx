@@ -18,7 +18,7 @@ export function SetupCompleteness() {
     {
       id: "export",
       label: "Create a backup",
-      completed: false, // Stub - would track if user has exported
+      completed: localStorage.getItem("lastExportDate") !== null,
     },
     {
       id: "journal",
@@ -36,7 +36,7 @@ export function SetupCompleteness() {
   }
 
   return (
-    <div className="rounded-lg border border-border bg-muted/30 p-4">
+    <div className="rounded-lg border border-border bg-muted/30 p-4" data-testid="settings-setup-completeness">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-sm font-medium text-foreground">Quick setup</h3>
         <span className="text-xs text-muted-foreground">

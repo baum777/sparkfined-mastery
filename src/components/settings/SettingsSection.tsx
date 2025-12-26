@@ -6,6 +6,7 @@ interface SettingsSectionProps {
   children: React.ReactNode;
   className?: string;
   priority?: boolean;
+  "data-testid"?: string;
 }
 
 export function SettingsSection({
@@ -14,6 +15,7 @@ export function SettingsSection({
   children,
   className,
   priority = false,
+  "data-testid": testId,
 }: SettingsSectionProps) {
   return (
     <section
@@ -22,6 +24,7 @@ export function SettingsSection({
         priority && "ring-1 ring-primary/20",
         className
       )}
+      data-testid={testId}
     >
       <div className="mb-4">
         <h2 className={cn(

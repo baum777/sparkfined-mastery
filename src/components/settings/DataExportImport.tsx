@@ -34,6 +34,9 @@ export function DataExportImport() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
+      // Track export for setup completeness
+      localStorage.setItem("lastExportDate", new Date().toISOString());
+
       setExportFeedback("success");
       toast({
         title: "Export successful",
