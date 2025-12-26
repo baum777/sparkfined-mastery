@@ -16,7 +16,7 @@ export function WatchlistCard({ item, isSelected, onSelect, onRemove }: Watchlis
   return (
     <Card
       className={cn(
-        'cursor-pointer transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'cursor-pointer transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
         isSelected && 'ring-2 ring-primary bg-accent/30'
       )}
       onClick={onSelect}
