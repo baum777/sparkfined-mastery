@@ -60,9 +60,9 @@ export function ReplayPlayer({ session, onLogToJournal }: ReplayPlayerProps) {
 
   return (
     <div
-      className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4"
+      className="flex flex-col gap-4 rounded-lg border border-border bg-card p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       onKeyDown={handleKeyDown}
-      tabIndex={-1}
+      tabIndex={0}
     >
       {/* Chart placeholder */}
       <div className="flex h-48 items-center justify-center rounded-md bg-secondary/30 text-muted-foreground sm:h-64">
@@ -111,6 +111,7 @@ export function ReplayPlayer({ session, onLogToJournal }: ReplayPlayerProps) {
             onClick={handleReset}
             aria-label="Reset replay"
             className="focus-visible:ring-2 focus-visible:ring-ring"
+            data-testid="replay-reset-btn"
           >
             <RotateCcw className="h-4 w-4" />
           </Button>
@@ -120,6 +121,7 @@ export function ReplayPlayer({ session, onLogToJournal }: ReplayPlayerProps) {
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause replay" : "Play replay"}
             className="focus-visible:ring-2 focus-visible:ring-ring"
+            data-testid="replay-play-btn"
           >
             {isPlaying ? (
               <Pause className="h-4 w-4" />
@@ -131,6 +133,7 @@ export function ReplayPlayer({ session, onLogToJournal }: ReplayPlayerProps) {
             <SelectTrigger
               className="w-20 focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Playback speed"
+              data-testid="replay-speed-select"
             >
               <SelectValue />
             </SelectTrigger>
@@ -146,10 +149,16 @@ export function ReplayPlayer({ session, onLogToJournal }: ReplayPlayerProps) {
           variant="secondary"
           onClick={onLogToJournal}
           className="focus-visible:ring-2 focus-visible:ring-ring"
+          data-testid="replay-log-journal-btn"
         >
           Log insights to Journal
         </Button>
       </div>
+
+      {/* Keyboard shortcut hint */}
+      <p className="text-center text-xs text-muted-foreground/70">
+        Space to play/pause • Arrow keys to seek
+      </p>
 
       {/* Collapsible session info */}
       <Collapsible open={isInfoOpen} onOpenChange={setIsInfoOpen}>

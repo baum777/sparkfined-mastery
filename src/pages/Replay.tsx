@@ -26,7 +26,7 @@ export default function Replay() {
   }, [navigate, activeSession]);
 
   return (
-    <div className="flex flex-col gap-6 p-4 sm:p-6">
+    <div className="flex flex-col gap-6 p-4 sm:p-6" data-testid="page-replay">
       <header>
         <h1 className="text-2xl font-bold" data-testid="replay-heading">
           Chart Replay
