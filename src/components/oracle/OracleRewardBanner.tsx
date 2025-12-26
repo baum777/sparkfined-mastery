@@ -22,10 +22,10 @@ export function OracleRewardBanner({ streak }: OracleRewardBannerProps) {
             </div>
             <div className="space-y-1">
               <p className="text-sm font-medium text-foreground">
-                Building toward mastery
+                From degen to disciplined
               </p>
               <p className="text-sm text-muted-foreground">
-                {streak} insights reviewed — each one sharpens your edge.
+                {streak} insights logged — steady progress compounds.
               </p>
             </div>
           </div>
