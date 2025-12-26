@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,7 +24,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TemplateSelector, TradeTemplate } from "./TemplateSelector";
 import { AiNotesStatus } from "@/components/journal/AiNotesStatus";
-import { Save, TrendingUp, TrendingDown } from "lucide-react";
+import { Save, TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
 
 const tradeSchema = z.object({
   asset: z.string().min(1, "Asset/symbol is required"),
@@ -47,6 +47,7 @@ interface TradeEntryFormProps {
 
 export function TradeEntryForm({ onSubmit }: TradeEntryFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const [templateApplied, setTemplateApplied] = useState<string | null>(null);
 
   const form = useForm<TradeFormData>({
     resolver: zodResolver(tradeSchema),
@@ -89,6 +90,9 @@ export function TradeEntryForm({ onSubmit }: TradeEntryFormProps) {
     if (template.notes) {
       form.setValue("notes", template.notes);
     }
+    // Show feedback briefly
+    setTemplateApplied(template.name);
+    setTimeout(() => setTemplateApplied(null), 2000);
   };
 
   return (
@@ -96,7 +100,17 @@ export function TradeEntryForm({ onSubmit }: TradeEntryFormProps) {
       <CardHeader className="pb-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <CardTitle className="text-lg">Log Trade</CardTitle>
-          <TemplateSelector onApply={applyTemplate} />
+          <div className="flex items-center gap-2">
+            {templateApplied && (
+              <span 
+                className="text-xs text-chart-2 animate-in fade-in slide-in-from-right-2 duration-200"
+                data-testid="template-applied-feedback"
+              >
+                ✓ {templateApplied} applied
+              </span>
+            )}
+            <TemplateSelector onApply={applyTemplate} />
+          </div>
         </div>
       </CardHeader>
       <CardContent>
@@ -267,10 +281,21 @@ export function TradeEntryForm({ onSubmit }: TradeEntryFormProps) {
               )}
             />
 
-            <Button type="submit" className="w-full sm:w-auto" data-testid="save-trade-btn">
-              <Save className="mr-2 h-4 w-4" />
-              Save Trade
-            </Button>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+              <Button type="submit" className="w-full sm:w-auto" data-testid="save-trade-btn">
+                <Save className="mr-2 h-4 w-4" />
+                Save Trade
+              </Button>
+              <span 
+                className="text-xs text-muted-foreground flex items-center gap-1"
+                data-testid="journal-mastery-cue"
+              >
+                <span className="opacity-70">degen</span>
+                <ArrowRight className="h-3 w-3 opacity-50" />
+                <span>mastery</span>
+                <span className="opacity-50">— each log sharpens your edge</span>
+              </span>
+            </div>
           </form>
         </Form>
       </CardContent>
