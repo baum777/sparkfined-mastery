@@ -83,11 +83,14 @@ export default function Learn() {
       </div>
 
       {filteredAndSortedLessons.length === 0 && (
-        <div className="py-12 text-center text-muted-foreground">
+        <div 
+          className="rounded-md bg-muted/30 py-8 text-center text-muted-foreground"
+          data-testid="lessons-empty-state"
+        >
           No lessons match your filters.{" "}
           <button
             onClick={handleReset}
-            className="text-primary underline underline-offset-2 hover:text-primary/80"
+            className="text-primary underline underline-offset-2 hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background rounded"
             data-testid="btn-reset-filters"
           >
             Reset filters

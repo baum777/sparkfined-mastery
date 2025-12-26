@@ -105,7 +105,7 @@ export function LessonCard({ lesson }: LessonCardProps) {
           <Button 
             asChild 
             size="sm" 
-            className="w-full"
+            className="w-full focus-visible:ring-offset-background"
             data-testid={`start-drill-${id}`}
           >
             <Link to={drillRoute}>
