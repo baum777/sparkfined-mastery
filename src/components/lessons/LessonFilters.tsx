@@ -37,7 +37,7 @@ export function LessonFilters({
           onValueChange={(value) => onSortChange(value as SortOption)}
         >
           <SelectTrigger 
-            className="w-[180px] bg-card" 
+            className="w-[180px] bg-card focus-visible:ring-offset-background" 
             aria-label="Sort lessons"
             data-testid="sort-select"
           >
@@ -55,7 +55,7 @@ export function LessonFilters({
             variant="ghost"
             size="sm"
             onClick={onReset}
-            className="text-muted-foreground"
+            className="text-muted-foreground hover:text-foreground focus-visible:ring-offset-background"
             data-testid="reset-filters"
           >
             <X className="mr-1 h-3 w-3" aria-hidden="true" />
@@ -74,9 +74,9 @@ export function LessonFilters({
               className={`
                 inline-flex items-center rounded-full px-3 py-1 text-sm font-medium
                 transition-colors focus-visible:outline-none focus-visible:ring-2 
-                focus-visible:ring-ring focus-visible:ring-offset-2
+                focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background
                 ${isActive 
-                  ? "bg-primary text-primary-foreground" 
+                  ? "bg-primary text-primary-foreground ring-2 ring-primary/30" 
                   : "bg-muted text-muted-foreground hover:bg-muted/80"
                 }
               `}
