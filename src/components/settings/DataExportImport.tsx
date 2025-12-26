@@ -103,13 +103,13 @@ export function DataExportImport() {
   };
 
   const getButtonIcon = (feedback: FeedbackState, DefaultIcon: typeof Download) => {
-    if (feedback === "success") return <Check className="h-4 w-4 text-green-500" />;
+    if (feedback === "success") return <Check className="h-4 w-4 text-success" />;
     if (feedback === "error") return <AlertCircle className="h-4 w-4 text-destructive" />;
     return <DefaultIcon className="h-4 w-4" />;
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-testid="settings-export-import-row">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <Button
           variant="outline"

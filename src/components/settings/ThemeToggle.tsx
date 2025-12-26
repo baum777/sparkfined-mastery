@@ -8,7 +8,7 @@ export function ThemeToggle() {
   const isDark = theme === "dark";
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between" data-testid="settings-theme-row">
       <div className="flex items-center gap-3">
         {isDark ? (
           <Moon className="h-5 w-5 text-muted-foreground" />
