@@ -1,40 +1,13 @@
-import { useState } from "react";
-import { RefreshCw, TrendingUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function ChartCanvas() {
-  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
-  const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const handleRefresh = () => {
-    setIsRefreshing(true);
-    // Simulate data reload
-    setTimeout(() => {
-      setLastRefresh(new Date());
-      setIsRefreshing(false);
-    }, 500);
-  };
-
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>BTC/USD</span>
-          <span>•</span>
-          <span>Last updated: {lastRefresh.toLocaleTimeString()}</span>
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          className="gap-2"
-          data-testid="chart-refresh"
-        >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} aria-hidden="true" />
-          {isRefreshing ? "Refreshing..." : "Refresh"}
-        </Button>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>BTC/USD</span>
+        <span>•</span>
+        <span className="text-muted-foreground/70">Awaiting data source</span>
       </div>
 
       <div 
