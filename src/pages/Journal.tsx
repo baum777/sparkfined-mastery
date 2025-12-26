@@ -1,15 +1,43 @@
-import { BookOpen } from "lucide-react";
+import { useState } from "react";
+import { TradeEntryForm } from "@/features/journal/components";
+import { JournalProgress, JournalEmptyState } from "@/components/journal";
+import { toast } from "@/hooks/use-toast";
 
 export default function Journal() {
+  const [trades, setTrades] = useState<unknown[]>([]);
+
+  const handleTradeSubmit = (data: unknown) => {
+    setTrades((prev) => [...prev, data]);
+    toast({
+      title: "Trade logged",
+      description: "Your trade has been saved successfully.",
+    });
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center gap-4 p-8 text-center" data-testid="page-journal">
-      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-muted">
-        <BookOpen className="h-8 w-8 text-muted-foreground" />
+    <div className="flex flex-col gap-6 p-4 sm:p-6" data-testid="page-journal">
+      {/* Header with Progress */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">Journal</h1>
+          <p className="text-sm text-muted-foreground">
+            Log and review your trades with notes and custom tags.
+          </p>
+        </div>
+        <JournalProgress currentStep="state" />
       </div>
-      <h1 className="text-2xl font-bold">Journal</h1>
-      <p className="max-w-md text-muted-foreground">
-        Log and review your trades with notes and custom tags.
-      </p>
+
+      {/* Trade Entry Form */}
+      <TradeEntryForm onSubmit={handleTradeSubmit} />
+
+      {/* Trade List or Empty State */}
+      {trades.length === 0 ? (
+        <JournalEmptyState />
+      ) : (
+        <div className="text-sm text-muted-foreground">
+          {trades.length} trade{trades.length !== 1 ? "s" : ""} logged
+        </div>
+      )}
     </div>
   );
 }
