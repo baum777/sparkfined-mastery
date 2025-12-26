@@ -34,7 +34,7 @@ export function AlertFilters({ filter, onFilterChange, onClear, resultsCount }: 
             onClick={() => onFilterChange(option.value)}
             aria-pressed={isActive}
             data-testid={`filter-${option.value}`}
-            className={isActive ? 'ring-1 ring-ring' : ''}
+            className={`focus-visible:ring-offset-background ${isActive ? 'ring-1 ring-ring' : ''}`}
           >
             {option.label}
           </Button>
@@ -46,7 +46,7 @@ export function AlertFilters({ filter, onFilterChange, onClear, resultsCount }: 
           variant="ghost"
           size="sm"
           onClick={onClear}
-          className="text-xs text-muted-foreground hover:text-foreground"
+          className="text-xs text-muted-foreground hover:text-foreground focus-visible:ring-offset-background"
           aria-label="Clear filter"
           data-testid="filter-clear"
         >

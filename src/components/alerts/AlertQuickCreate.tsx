@@ -55,7 +55,7 @@ export function AlertQuickCreate({ onSubmit }: AlertQuickCreateProps) {
           Condition
         </label>
         <Select value={condition} onValueChange={setCondition}>
-          <SelectTrigger id="alert-condition">
+          <SelectTrigger id="alert-condition" className="focus:ring-offset-background">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -83,6 +83,7 @@ export function AlertQuickCreate({ onSubmit }: AlertQuickCreateProps) {
       <Button 
         type="submit" 
         disabled={!isValid}
+        className="focus-visible:ring-offset-background"
         data-testid="btn-create-alert"
       >
         <Plus className="mr-2 h-4 w-4" />
