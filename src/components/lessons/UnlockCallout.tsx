@@ -27,7 +27,7 @@ export function UnlockCallout({ lockedCount }: UnlockCalloutProps) {
             </p>
           </div>
         </div>
-        <Button asChild className="shrink-0">
+        <Button asChild className="shrink-0" data-testid="btn-go-to-journal">
           <Link to="/journal">
             Go to Journal
             <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
