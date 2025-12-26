@@ -1,15 +1,46 @@
-import { LayoutDashboard } from "lucide-react";
+import {
+  DailySnapshotCard,
+  QuickActionsCard,
+  InsightCard,
+  AlertsSnapshotCard,
+  MasteryProgressCard,
+  DashboardEmptyState,
+} from "@/components/dashboard";
 
 export default function Dashboard() {
+  // Placeholder: in real app, derive from journal entries
+  const hasEntries = false;
+  const tradeCount = 0;
+  const triggeredAlerts = 0;
+
+  const insightsReady = tradeCount >= 5;
+  const masteryStep = Math.min(tradeCount, 5);
+
   return (
-    <div className="flex flex-col items-center justify-center gap-4 p-8 text-center" data-testid="page-dashboard">
-      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-muted">
-        <LayoutDashboard className="h-8 w-8 text-muted-foreground" />
-      </div>
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p className="max-w-md text-muted-foreground">
-        Your daily trading snapshot and quick actions will appear here.
-      </p>
+    <div className="flex flex-col gap-6 p-4 md:p-6" data-testid="page-dashboard">
+      {/* Mastery Progress - quiet, top placement */}
+      <MasteryProgressCard currentStep={masteryStep} totalSteps={5} />
+
+      {!hasEntries ? (
+        <DashboardEmptyState />
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2">
+          <DailySnapshotCard />
+          <QuickActionsCard hasEntries={hasEntries} />
+          <InsightCard isReady={insightsReady} />
+          <AlertsSnapshotCard triggeredCount={triggeredAlerts} />
+        </div>
+      )}
+
+      {/* Show widgets in preview mode even when empty */}
+      {!hasEntries && (
+        <div className="grid gap-4 md:grid-cols-2 opacity-60">
+          <DailySnapshotCard />
+          <QuickActionsCard hasEntries={hasEntries} />
+          <InsightCard isReady={false} />
+          <AlertsSnapshotCard triggeredCount={triggeredAlerts} />
+        </div>
+      )}
     </div>
   );
 }
