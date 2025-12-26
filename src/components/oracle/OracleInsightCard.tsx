@@ -80,7 +80,7 @@ export function OracleInsightCard({ insight, onMarkAsRead }: OracleInsightCardPr
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground" data-testid="oracle-mark-read-hint">
               Logs to journal & builds streak
             </span>
           </div>
