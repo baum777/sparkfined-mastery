@@ -136,9 +136,9 @@ export function TradeEntryForm({ onSubmit }: TradeEntryFormProps) {
                     <FormLabel>
                       Direction <span className="text-destructive">*</span>
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value} name="direction">
                       <FormControl>
-                        <SelectTrigger aria-required="true">
+                        <SelectTrigger aria-required="true" name="direction">
                           <SelectValue placeholder="Select direction" />
                         </SelectTrigger>
                       </FormControl>
