@@ -12,7 +12,7 @@ interface OracleFiltersProps {
 }
 
 const FILTER_LABELS: Record<OracleFilter, string> = {
-  all: 'All',
+  all: 'All themes',
   new: 'New',
   read: 'Read',
 };
