@@ -33,6 +33,7 @@ export function AlertsEmptyState({ onCreateClick }: AlertsEmptyStateProps) {
         <Button 
           variant="outline" 
           asChild
+          data-testid="btn-go-to-chart"
         >
           <Link to="/chart">
             <LineChart className="mr-2 h-4 w-4" />
