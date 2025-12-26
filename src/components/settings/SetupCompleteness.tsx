@@ -46,9 +46,13 @@ export function SetupCompleteness() {
 
       <ul className="space-y-2">
         {steps.map((step) => (
-          <li key={step.id} className="flex items-center gap-2 text-sm">
+          <li 
+            key={step.id} 
+            className="flex items-center gap-2 text-sm"
+            data-testid={`setup-step-${step.id}`}
+          >
             {step.completed ? (
-              <Check className="h-4 w-4 text-green-500" />
+              <Check className="h-4 w-4 text-success" />
             ) : (
               <Circle className="h-4 w-4 text-muted-foreground" />
             )}
