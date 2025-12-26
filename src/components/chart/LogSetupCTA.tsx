@@ -12,7 +12,7 @@ export function LogSetupCTA() {
   return (
     <Button
       onClick={handleLogSetup}
-      className="gap-2"
+      className="gap-2 focus-visible:ring-offset-background"
       size="lg"
       data-testid="chart-log-setup-cta"
     >
