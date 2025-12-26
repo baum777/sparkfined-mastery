@@ -18,8 +18,6 @@ export function JournalProgress({
   currentStep = "state",
   completedSteps = [],
 }: JournalProgressProps) {
-  const currentIndex = STEPS.findIndex((s) => s.id === currentStep);
-
   return (
     <div
       className="flex items-center gap-1 text-xs text-muted-foreground"
@@ -31,18 +29,15 @@ export function JournalProgress({
         const isCompleted = completedSteps.includes(step.id);
         const isCurrent = step.id === currentStep;
 
+        // Determine variant based on state
+        const variant = isCurrent ? "default" : isCompleted ? "success" : "outline";
+
         return (
           <div key={step.id} className="flex items-center gap-1">
             {index > 0 && <span className="mx-1 text-border">→</span>}
             <Badge
-              variant={isCurrent ? "default" : isCompleted ? "secondary" : "outline"}
-              className={`gap-1 px-2 py-0.5 text-xs font-normal ${
-                isCurrent
-                  ? "bg-primary/10 text-primary"
-                  : isCompleted
-                  ? "bg-muted text-muted-foreground"
-                  : "text-muted-foreground/60"
-              }`}
+              variant={variant}
+              className="gap-1 px-2 py-0.5 text-xs font-normal"
             >
               {isCompleted ? (
                 <CheckCircle2 className="h-3 w-3" />

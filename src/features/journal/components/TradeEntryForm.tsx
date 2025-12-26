@@ -103,7 +103,7 @@ export function TradeEntryForm({ onSubmit }: TradeEntryFormProps) {
           <div className="flex items-center gap-2">
             {templateApplied && (
               <span 
-                className="text-xs text-chart-2 animate-in fade-in slide-in-from-right-2 duration-200"
+                className="text-xs text-success animate-in fade-in slide-in-from-right-2 duration-200"
                 data-testid="template-applied-feedback"
               >
                 ✓ {templateApplied} applied
@@ -282,7 +282,7 @@ export function TradeEntryForm({ onSubmit }: TradeEntryFormProps) {
             />
 
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-              <Button type="submit" className="w-full sm:w-auto" data-testid="save-trade-btn">
+              <Button type="submit" className="w-full sm:w-auto focus-visible:ring-offset-background" data-testid="save-trade-btn">
                 <Save className="mr-2 h-4 w-4" />
                 Save Trade
               </Button>
