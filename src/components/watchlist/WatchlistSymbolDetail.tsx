@@ -27,13 +27,13 @@ export function WatchlistSymbolDetail({ item }: WatchlistSymbolDetailProps) {
         )}
         
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button asChild data-testid="open-chart">
+          <Button asChild className="focus-visible:ring-offset-background" data-testid="open-chart">
             <Link to={`/chart?symbol=${item.symbol}`}>
               <LineChart className="h-4 w-4 mr-2" />
               Analyze in Chart
             </Link>
           </Button>
-          <Button variant="outline" asChild data-testid="open-replay">
+          <Button variant="outline" asChild className="focus-visible:ring-offset-background" data-testid="open-replay">
             <Link to={`/replay?symbol=${item.symbol}`}>
               <Play className="h-4 w-4 mr-2" />
               Practice in Replay

@@ -33,7 +33,7 @@ export function WatchlistQuickAdd({ onAdd }: WatchlistQuickAddProps) {
         aria-label="Symbol to add"
         data-testid="watchlist-add-input"
       />
-      <Button type="submit" size="sm" disabled={!symbol.trim()} data-testid="watchlist-add-submit">
+      <Button type="submit" size="sm" disabled={!symbol.trim()} className="focus-visible:ring-offset-background" data-testid="watchlist-add-submit">
         <Plus className="h-4 w-4 mr-1" />
         Add
       </Button>

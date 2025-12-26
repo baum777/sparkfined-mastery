@@ -70,7 +70,10 @@ export default function Watchlist() {
             {selectedItem ? (
               <WatchlistSymbolDetail item={selectedItem} />
             ) : (
-              <div className="rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
+              <div 
+                className="rounded-md bg-muted/30 py-8 text-center text-muted-foreground"
+                data-testid="watchlist-detail-empty"
+              >
                 Select a symbol to see details
               </div>
             )}
