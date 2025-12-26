@@ -88,6 +88,7 @@ export default function Learn() {
           <button
             onClick={handleReset}
             className="text-primary underline underline-offset-2 hover:text-primary/80"
+            data-testid="btn-reset-filters"
           >
             Reset filters
           </button>
