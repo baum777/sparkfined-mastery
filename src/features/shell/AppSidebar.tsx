@@ -40,14 +40,14 @@ export function AppSidebar() {
   );
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center gap-2 px-2 py-1">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary shadow-sm">
             <Flame className="h-5 w-5 text-primary-foreground" />
           </div>
           {!isCollapsed && (
-            <span className="text-lg font-semibold text-sidebar-foreground">
+            <span className="text-lg font-semibold text-sidebar-foreground tracking-tight">
               Sparkfined
             </span>
           )}
@@ -93,12 +93,12 @@ export function AppSidebar() {
                 className={cn(
                   "cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md transition-colors",
                   "flex items-center justify-between w-full",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-1 focus-visible:ring-offset-sidebar"
                 )}
                 data-testid="nav-advanced-trigger"
               >
                 <span>Advanced</span>
-                <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                <ChevronDown className="h-4 w-4 text-sidebar-foreground/50 transition-transform group-data-[state=open]/collapsible:rotate-180" />
               </SidebarGroupLabel>
             </CollapsibleTrigger>
             <CollapsibleContent>
