@@ -48,8 +48,11 @@ export function OracleInsightCard({ insight, onMarkAsRead }: OracleInsightCardPr
           <p className="text-sm">{insight.takeaway}</p>
         </div>
 
-        <details className="group">
-          <summary className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
+        <details className="group" data-testid={`oracle-insight-details-${insight.id}`}>
+          <summary 
+            className="flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+            data-testid={`oracle-insight-summary-${insight.id}`}
+          >
             <BookOpen className="h-4 w-4" />
             <span>View full analysis</span>
           </summary>
@@ -67,6 +70,7 @@ export function OracleInsightCard({ insight, onMarkAsRead }: OracleInsightCardPr
                     variant="outline"
                     size="sm"
                     onClick={() => onMarkAsRead(insight.id)}
+                    className="focus-visible:ring-offset-background"
                     data-testid={`oracle-mark-read-${insight.id}`}
                   >
                     <Check className="mr-1.5 h-4 w-4" />

@@ -31,7 +31,10 @@ export function OracleFilters({ filter, onFilterChange, counts }: OracleFiltersP
           onClick={() => onFilterChange(f)}
           role="tab"
           aria-selected={filter === f}
-          className={cn(filter === f && 'ring-1 ring-ring')}
+          className={cn(
+            'focus-visible:ring-offset-background',
+            filter === f && 'ring-1 ring-ring'
+          )}
           data-testid={`oracle-filter-${f}`}
         >
           {FILTER_LABELS[f]}

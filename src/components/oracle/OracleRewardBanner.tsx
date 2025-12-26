@@ -33,7 +33,7 @@ export function OracleRewardBanner({ streak }: OracleRewardBannerProps) {
             variant="outline"
             size="sm"
             onClick={() => navigate('/journal')}
-            className="shrink-0"
+            className="shrink-0 focus-visible:ring-offset-background"
             data-testid="oracle-view-journal"
           >
             View Journal
