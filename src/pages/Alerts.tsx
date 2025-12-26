@@ -82,9 +82,12 @@ export default function Alerts() {
 
           {/* Alerts List */}
           {filteredAlerts.length === 0 ? (
-            <p className="py-8 text-center text-muted-foreground">
+            <div 
+              className="rounded-md bg-muted/30 py-8 text-center text-muted-foreground"
+              data-testid="alerts-filter-empty-state"
+            >
               No alerts match the current filter.
-            </p>
+            </div>
           ) : (
             <div className="grid gap-3">
               {filteredAlerts.map((alert) => (
