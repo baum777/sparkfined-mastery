@@ -51,6 +51,7 @@ export function WatchlistCard({ item, isSelected, onSelect, onRemove }: Watchlis
               onRemove();
             }}
             aria-label={`Remove ${item.symbol} from watchlist`}
+            data-testid={`watchlist-remove-${item.symbol.toLowerCase()}`}
           >
             <Trash2 className="h-4 w-4" />
           </Button>
