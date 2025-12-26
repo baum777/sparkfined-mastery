@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { TradeEntryForm } from "@/features/journal/components";
 import { JournalProgress, JournalEmptyState } from "@/components/journal";
+import { useTradesStore, type Trade } from "@/features/journal";
 import { toast } from "@/hooks/use-toast";
 
 export default function Journal() {
-  const [trades, setTrades] = useState<unknown[]>([]);
+  const { trades, addTrade } = useTradesStore();
 
-  const handleTradeSubmit = (data: unknown) => {
-    setTrades((prev) => [...prev, data]);
+  const handleTradeSubmit = (data: Omit<Trade, "id" | "createdAt">) => {
+    addTrade(data);
     toast({
       title: "Trade logged",
       description: "Your trade has been saved successfully.",
