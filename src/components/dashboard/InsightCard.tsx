@@ -22,8 +22,8 @@ export function InsightCard({ isReady = false }: InsightCardProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground italic">
-            "Your personal insights will appear here after 5 trades."
+          <p className="text-sm text-muted-foreground">
+            Sample preview — log 5+ trades to unlock real insights.
           </p>
         </CardContent>
       </Card>
