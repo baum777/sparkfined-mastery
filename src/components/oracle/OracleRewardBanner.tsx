@@ -36,7 +36,7 @@ export function OracleRewardBanner({ streak }: OracleRewardBannerProps) {
             className="shrink-0"
             data-testid="oracle-view-journal"
           >
-            View auto-journal entry
+            View Journal
           </Button>
         </div>
       </CardContent>
