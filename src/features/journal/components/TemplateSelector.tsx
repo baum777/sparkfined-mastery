@@ -56,10 +56,11 @@ export function TemplateSelector({ onApply }: TemplateSelectorProps) {
           size="sm"
           className="gap-2"
           data-testid="template-selector-btn"
+          aria-label="Apply template to pre-fill fields"
         >
           <FileText className="h-4 w-4" />
-          <span className="hidden sm:inline">Use Template</span>
-          <span className="sm:hidden">Template</span>
+          <span className="hidden sm:inline">Apply Template</span>
+          <span className="sm:hidden" aria-hidden="true">Template</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
