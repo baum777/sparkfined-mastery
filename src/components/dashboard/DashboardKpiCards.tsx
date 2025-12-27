@@ -1,5 +1,4 @@
 import { TrendingUp, Percent, Activity, Flame, Inbox } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface DashboardKpiCardsProps {
@@ -23,28 +22,26 @@ interface KpiCardProps {
 
 function KpiCard({ icon, label, value, subValue, testId, highlight = "neutral" }: KpiCardProps) {
   return (
-    <Card 
-      className="flex-1 min-w-[140px]" 
+    <div 
+      className="card-interactive flex-1 min-w-[140px] py-3 px-4" 
       data-testid={testId}
     >
-      <CardContent className="py-3 px-4">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-muted-foreground">{icon}</span>
-          <span className="text-xs text-muted-foreground truncate">{label}</span>
-        </div>
-        <p className={cn(
-          "text-lg font-semibold",
-          highlight === "positive" && "text-success",
-          highlight === "negative" && "text-destructive",
-          highlight === "neutral" && "text-foreground"
-        )}>
-          {value}
-        </p>
-        {subValue && (
-          <p className="text-xs text-muted-foreground">{subValue}</p>
-        )}
-      </CardContent>
-    </Card>
+      <div className="flex items-center gap-2 mb-1">
+        <span className="text-text-tertiary">{icon}</span>
+        <span className="text-xs text-text-tertiary truncate">{label}</span>
+      </div>
+      <p className={cn(
+        "text-lg font-semibold font-mono tabular-nums",
+        highlight === "positive" && "text-sentiment-bull",
+        highlight === "negative" && "text-sentiment-bear",
+        highlight === "neutral" && "text-text-primary"
+      )}>
+        {value}
+      </p>
+      {subValue && (
+        <p className="text-xs text-text-secondary font-mono tabular-nums">{subValue}</p>
+      )}
+    </div>
   );
 }
 

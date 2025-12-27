@@ -1,5 +1,4 @@
 import { ArrowRight, Wallet } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -23,10 +22,10 @@ interface RecentEntriesCardProps {
   onConnectWallet?: () => void;
 }
 
-const typeConfig: Record<EntryType, { label: string; className: string }> = {
-  buy: { label: "Buy", className: "bg-success/20 text-success border-success/30" },
-  sell: { label: "Sell", className: "bg-destructive/20 text-destructive border-destructive/30" },
-  hold: { label: "Hold", className: "bg-muted/50 text-muted-foreground border-border/50" },
+const typeConfig: Record<EntryType, { label: string; badgeClass: string }> = {
+  buy: { label: "Buy", badgeClass: "badge-bull" },
+  sell: { label: "Sell", badgeClass: "badge-bear" },
+  hold: { label: "Hold", badgeClass: "badge-neutral" },
 };
 
 function EntryCard({ entry, onView }: { entry: JournalEntry; onView?: () => void }) {
@@ -34,27 +33,27 @@ function EntryCard({ entry, onView }: { entry: JournalEntry; onView?: () => void
 
   return (
     <div 
-      className="min-w-[200px] flex-1 bg-card/60 border border-border/40 rounded-lg p-4 space-y-3"
+      className="card-interactive min-w-[200px] flex-1 p-4 space-y-3"
       data-testid={`recent-entry-${entry.id}`}
     >
       <div className="flex items-center justify-between gap-2">
-        <Badge variant="outline" className={cn("text-[10px] px-1.5 py-0.5 font-medium", config.className)}>
+        <span className={config.badgeClass}>
           {config.label}
-        </Badge>
-        <span className="text-xs text-muted-foreground font-medium">{entry.symbol}</span>
+        </span>
+        <span className="text-xs text-text-secondary font-mono font-medium">{entry.symbol}</span>
       </div>
       <div className="space-y-1.5">
-        <h4 className="font-semibold text-sm text-foreground line-clamp-1">{entry.title}</h4>
-        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{entry.description}</p>
+        <h4 className="font-semibold text-sm text-text-primary line-clamp-1">{entry.title}</h4>
+        <p className="text-xs text-text-tertiary line-clamp-2 leading-relaxed">{entry.description}</p>
       </div>
       <div className="flex items-center justify-between pt-1">
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-text-tertiary">
           {format(entry.date, "MMM dd, yyyy")}
         </span>
         <Button
           variant="ghost"
           size="sm"
-          className="h-auto p-0 text-xs text-primary hover:text-primary/80 gap-1"
+          className="h-auto p-0 text-xs text-brand hover:text-brand-hover gap-1"
           onClick={onView}
         >
           View <ArrowRight className="h-3 w-3" />
@@ -67,23 +66,23 @@ function EntryCard({ entry, onView }: { entry: JournalEntry; onView?: () => void
 function WalletConnectPrompt({ onConnect }: { onConnect?: () => void }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
-      <div className="p-4 rounded-full bg-muted/30 border border-border/50">
-        <Wallet className="h-8 w-8 text-muted-foreground" />
+      <div className="p-4 rounded-full bg-surface-subtle border border-border-sf-subtle">
+        <Wallet className="h-8 w-8 text-text-tertiary" />
       </div>
       <div className="space-y-2">
-        <h4 className="font-medium text-foreground">Connect your wallet</h4>
-        <p className="text-sm text-muted-foreground max-w-sm">
+        <h4 className="font-medium text-text-primary">Connect your wallet</h4>
+        <p className="text-sm text-text-secondary max-w-sm">
           Connect your wallet to see your recent trading activity and journal entries.
         </p>
       </div>
-      <Button 
+      <button 
         onClick={onConnect}
-        className="gap-2"
+        className="btn-primary gap-2 inline-flex items-center"
         data-testid="recent-entries-connect-wallet"
       >
         <Wallet className="h-4 w-4" />
         Connect Wallet
-      </Button>
+      </button>
     </div>
   );
 }
@@ -142,13 +141,13 @@ export function RecentEntriesCard({
     <div className="w-full space-y-4" data-testid="dashboard-recent-entries">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Journal</p>
-          <h3 className="text-lg font-semibold text-foreground">Recent entries</h3>
+          <p className="text-xs text-text-tertiary uppercase tracking-wider font-medium">Journal</p>
+          <h3 className="text-lg font-semibold text-text-primary">Recent entries</h3>
         </div>
         <Button
           variant="ghost"
           size="sm"
-          className="gap-1 text-muted-foreground hover:text-foreground text-sm"
+          className="gap-1 text-text-secondary hover:text-text-primary text-sm"
           onClick={onViewJournal}
           data-testid="recent-entries-view-journal"
         >
