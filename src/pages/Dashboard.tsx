@@ -1,18 +1,18 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import {
   DashboardHeader,
-  KpiStrip,
   DailyBiasCard,
   HoldingsCard,
   LastTradesCard,
   InsightCard,
   JournalSnapshotCard,
   AlertsSnapshotCard,
-  MasteryProgressCard,
   DashboardEmptyState,
   DashboardFab,
+  DashboardKpiCards,
+  RecentEntriesCard,
 } from "@/components/dashboard";
 import { useTradesStore } from "@/features/journal/useTradesStore";
 import { useAlerts } from "@/features/alerts";
@@ -21,28 +21,43 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { hasTrades, trades } = useTradesStore();
   const { alerts } = useAlerts();
+  const [isRefreshingBias, setIsRefreshingBias] = useState(false);
   
   const triggeredAlerts = alerts.filter(a => a.status === 'triggered').length;
-  const masteryStep = Math.min(trades.length, 5);
 
   // Calculate KPIs
   const kpiData = useMemo(() => {
     if (trades.length === 0) {
-      return { winRate: 0, avgRR: 0, streak: 0, bestTrade: "" };
+      return { 
+        netPnl: 0, 
+        netPnlPercent: 0, 
+        winRate30d: 0, 
+        todayTxs: 0, 
+        todayAmount: 0,
+        journalStreak: 0,
+        tradeInboxCount: 0,
+      };
     }
 
     const tradesWithPnL = trades.filter(t => t.pnl && parseFloat(t.pnl) !== 0);
     const wins = tradesWithPnL.filter(t => parseFloat(t.pnl!) > 0);
     const winRate = tradesWithPnL.length > 0 ? (wins.length / tradesWithPnL.length) * 100 : 0;
     
-    const best = wins.sort((a, b) => parseFloat(b.pnl!) - parseFloat(a.pnl!))[0];
-    const bestTrade = best ? `+${best.pnl}` : "";
+    const netPnl = tradesWithPnL.reduce((sum, t) => sum + parseFloat(t.pnl!), 0);
+    
+    // Today's trades
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayTrades = trades.filter(t => new Date(t.createdAt) >= today);
 
     return {
-      winRate,
-      avgRR: 1.5, // Placeholder - would calculate from actual R:R data
-      streak: 3, // Placeholder - would calculate from consecutive days
-      bestTrade,
+      netPnl,
+      netPnlPercent: 12.5, // Placeholder - would calculate from portfolio
+      winRate30d: winRate,
+      todayTxs: todayTrades.length,
+      todayAmount: todayTrades.reduce((sum, t) => sum + (parseFloat(t.pnl || "0")), 0),
+      journalStreak: 3, // Placeholder - would calculate from consecutive days
+      tradeInboxCount: 2, // Placeholder - would come from notifications
     };
   }, [trades]);
 
@@ -70,6 +85,15 @@ export default function Dashboard() {
     navigate("/alerts");
   };
 
+  const handleRefreshBias = () => {
+    setIsRefreshingBias(true);
+    setTimeout(() => setIsRefreshingBias(false), 1500);
+  };
+
+  const handleViewJournal = () => {
+    navigate("/journal");
+  };
+
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6" data-testid="page-dashboard">
       {/* Header with meta counters and primary CTA */}
@@ -79,32 +103,46 @@ export default function Dashboard() {
         onLogEntry={handleLogEntry}
       />
 
-      {/* Mastery Progress - quiet, top placement */}
-      <MasteryProgressCard currentStep={masteryStep} totalSteps={5} />
+      {/* 5 Horizontal KPI Cards */}
+      <DashboardKpiCards
+        netPnl={kpiData.netPnl}
+        netPnlPercent={kpiData.netPnlPercent}
+        winRate30d={kpiData.winRate30d}
+        todayTxs={kpiData.todayTxs}
+        todayAmount={kpiData.todayAmount}
+        journalStreak={kpiData.journalStreak}
+        tradeInboxCount={kpiData.tradeInboxCount}
+      />
 
       {!hasTrades ? (
         <DashboardEmptyState />
       ) : (
         <>
-          {/* KPI Strip - 5 KPIs */}
-          <KpiStrip
-            winRate={kpiData.winRate}
-            avgRR={kpiData.avgRR}
-            totalTrades={trades.length}
-            streak={kpiData.streak}
-            bestTrade={kpiData.bestTrade}
+          {/* Daily Bias Card - Full Width */}
+          <DailyBiasCard 
+            symbol="SOL"
+            bias="bullish"
+            confidence={75}
+            bulletPoints={[
+              "Market structure shows higher lows with strong momentum on intraday timeframes.",
+              "Watching for pullbacks to re-enter long positions with tight risk management."
+            ]}
+            lastChecked={new Date()}
+            onRefresh={handleRefreshBias}
+            isRefreshing={isRefreshingBias}
+            onViewAnalysis={() => navigate("/oracle")}
+            onOpenChart={() => navigate("/chart")}
           />
 
           {/* Primary Cards Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="dashboard-primary-cards">
-            <DailyBiasCard />
             <HoldingsCard />
             <LastTradesCard />
+            <InsightCard isReady={trades.length >= 5} />
           </div>
 
           {/* Secondary Cards Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="dashboard-secondary-cards">
-            <InsightCard isReady={trades.length >= 5} />
             <JournalSnapshotCard 
               totalEntries={journalData.totalEntries}
               thisWeekEntries={journalData.thisWeekEntries}
@@ -112,13 +150,22 @@ export default function Dashboard() {
             />
             <AlertsSnapshotCard triggeredCount={triggeredAlerts} />
           </div>
+
+          {/* Recent Entries Footer - Full Width */}
+          <RecentEntriesCard 
+            onViewJournal={handleViewJournal}
+            onViewEntry={(id) => navigate(`/journal?entry=${id}`)}
+          />
         </>
       )}
 
       {/* Show preview widgets when empty */}
       {!hasTrades && (
         <div className="grid gap-4 md:grid-cols-2 opacity-60" data-testid="dashboard-preview-widgets">
-          <DailyBiasCard />
+          <DailyBiasCard 
+            onRefresh={handleRefreshBias}
+            isRefreshing={isRefreshingBias}
+          />
           <HoldingsCard />
           <LastTradesCard />
           <InsightCard isReady={false} />

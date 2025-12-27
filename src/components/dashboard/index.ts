@@ -11,3 +11,5 @@ export { KpiStrip } from "./KpiStrip";
 export { DailyBiasCard } from "./DailyBiasCard";
 export { DashboardFab } from "./DashboardFab";
 export { JournalSnapshotCard } from "./JournalSnapshotCard";
+export { DashboardKpiCards } from "./DashboardKpiCards";
+export { RecentEntriesCard } from "./RecentEntriesCard";
