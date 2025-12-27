@@ -15,7 +15,7 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-sm md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border-sf-subtle bg-surface/95 backdrop-blur-sm md:hidden"
       data-testid="mobile-bottom-nav"
       role="navigation"
       aria-label="Primary navigation"
@@ -29,15 +29,28 @@ export function MobileBottomNav() {
               to={item.path}
               data-testid={`${item.testId}-mobile`}
               className={cn(
-                "flex flex-col items-center justify-center gap-1 rounded-md px-3 py-2 text-xs transition-colors",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                "flex flex-col items-center justify-center gap-1 rounded-xl px-3 py-2 text-xs transition-all duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60",
                 isActive
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "text-brand"
+                  : "text-text-tertiary hover:text-text-primary"
               )}
             >
-              <item.icon className={cn("h-5 w-5", isActive && "text-primary")} />
-              <span className="truncate">{item.title}</span>
+              <div className={cn(
+                "relative flex items-center justify-center",
+                isActive && "after:absolute after:-bottom-1 after:h-0.5 after:w-4 after:rounded-full after:bg-brand after:shadow-glow-accent"
+              )}>
+                <item.icon className={cn(
+                  "h-5 w-5 transition-all duration-150",
+                  isActive ? "text-brand drop-shadow-[0_0_6px_rgba(15,179,76,0.5)]" : ""
+                )} />
+              </div>
+              <span className={cn(
+                "truncate font-medium",
+                isActive ? "text-brand" : ""
+              )}>
+                {item.title}
+              </span>
             </NavLink>
           );
         })}
