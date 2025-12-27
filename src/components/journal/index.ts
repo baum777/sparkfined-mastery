@@ -8,3 +8,13 @@ export { TradeContextBanner } from "./TradeContextBanner";
 export { StickyActionBar } from "./StickyActionBar";
 export { ArchetypeScoreCard, MetricsGrid, InsightCardItem } from "./JournalOutputBlocks";
 export { JournalHistoryList } from "./JournalHistoryList";
+
+// New Journal Entry Components
+export { JournalHeader, type JournalTemplate } from "./JournalHeader";
+export { EmotionalStateCards, type EmotionalStateValue } from "./EmotionalStateCards";
+export { ConfidenceSlider } from "./ConfidenceSlider";
+export { AdditionalSliders } from "./AdditionalSliders";
+export { MarketContextPanel } from "./MarketContextPanel";
+export { AiNotesSection } from "./AiNotesSection";
+export { RecentEntriesSection } from "./RecentEntriesSection";
+export { JournalEntryForm } from "./JournalEntryForm";
