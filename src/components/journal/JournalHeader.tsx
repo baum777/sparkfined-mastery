@@ -66,6 +66,7 @@ interface JournalHeaderProps {
   onCreateTemplate: () => void;
   canUndo: boolean;
   appliedTemplate?: string | null;
+  customTemplates?: JournalTemplate[];
 }
 
 export function JournalHeader({
@@ -74,8 +75,10 @@ export function JournalHeader({
   onCreateTemplate,
   canUndo,
   appliedTemplate,
+  customTemplates = [],
 }: JournalHeaderProps) {
   const [open, setOpen] = useState(false);
+  const allTemplates = [...DEFAULT_TEMPLATES, ...customTemplates];
 
   const handleSelectTemplate = (template: JournalTemplate) => {
     onApplyTemplate(template);
@@ -100,9 +103,10 @@ export function JournalHeader({
               <ChevronDown className="h-4 w-4 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-[280px]">
-            {DEFAULT_TEMPLATES.map((template) => {
+          <DropdownMenuContent align="start" className="w-[280px] max-h-[300px] overflow-y-auto">
+            {allTemplates.map((template) => {
               const Icon = ICON_MAP[template.icon];
+              const isCustom = template.id.startsWith("custom-");
               return (
                 <DropdownMenuItem
                   key={template.id}
@@ -113,6 +117,11 @@ export function JournalHeader({
                   <div className="flex items-center gap-2 font-medium">
                     <Icon className="h-4 w-4 text-primary" />
                     {template.name}
+                    {isCustom && (
+                      <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded">
+                        Custom
+                      </span>
+                    )}
                   </div>
                   <span className="text-xs text-muted-foreground">
                     {template.description}

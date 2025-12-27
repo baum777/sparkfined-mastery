@@ -11,6 +11,7 @@ import { ConfidenceSlider } from "./ConfidenceSlider";
 import { AdditionalSliders } from "./AdditionalSliders";
 import { MarketContextPanel } from "./MarketContextPanel";
 import { AiNotesSection } from "./AiNotesSection";
+import { CreateTemplateModal } from "./CreateTemplateModal";
 
 interface JournalFormState {
   template?: JournalTemplate;
@@ -48,6 +49,8 @@ export function JournalEntryForm({ onSubmit }: JournalEntryFormProps) {
   const [state, setState] = useState<JournalFormState>(INITIAL_STATE);
   const [history, setHistory] = useState<JournalFormState[]>([]);
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
+  const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+  const [customTemplates, setCustomTemplates] = useState<JournalTemplate[]>([]);
 
   const updateState = useCallback((updates: Partial<JournalFormState>) => {
     setState((prev) => {
@@ -75,7 +78,12 @@ export function JournalEntryForm({ onSubmit }: JournalEntryFormProps) {
   }, [updateState]);
 
   const handleCreateTemplate = useCallback(() => {
-    toast({ title: "Coming Soon", description: "Custom template creation will be available soon" });
+    setIsTemplateModalOpen(true);
+  }, []);
+
+  const handleSaveTemplate = useCallback((template: JournalTemplate) => {
+    setCustomTemplates((prev) => [...prev, template]);
+    toast({ title: "Template Saved", description: `"${template.name}" added to your templates` });
   }, []);
 
   const handleImageChange = useCallback((file: File | null) => {
@@ -118,16 +126,32 @@ export function JournalEntryForm({ onSubmit }: JournalEntryFormProps) {
   }, [state, onSubmit]);
 
   return (
-    <Card data-testid="journal-entry-form">
-      <CardContent className="p-6 space-y-6">
-        {/* Header Section */}
-        <JournalHeader
-          onApplyTemplate={handleApplyTemplate}
-          onUndo={handleUndo}
-          onCreateTemplate={handleCreateTemplate}
-          canUndo={history.length > 0}
-          appliedTemplate={state.template?.name}
-        />
+    <>
+      <CreateTemplateModal
+        open={isTemplateModalOpen}
+        onOpenChange={setIsTemplateModalOpen}
+        onSave={handleSaveTemplate}
+        currentState={{
+          emotionalState: state.emotionalState,
+          confidence: state.confidence,
+          conviction: state.conviction,
+          patternQuality: state.patternQuality,
+          reasoning: state.reasoning,
+          tags: state.tags,
+        }}
+      />
+      
+      <Card data-testid="journal-entry-form">
+        <CardContent className="p-6 space-y-6">
+          {/* Header Section */}
+          <JournalHeader
+            onApplyTemplate={handleApplyTemplate}
+            onUndo={handleUndo}
+            onCreateTemplate={handleCreateTemplate}
+            canUndo={history.length > 0}
+            appliedTemplate={state.template?.name}
+            customTemplates={customTemplates}
+          />
 
         <Separator />
 
@@ -201,5 +225,6 @@ export function JournalEntryForm({ onSubmit }: JournalEntryFormProps) {
         </div>
       </CardContent>
     </Card>
+    </>
   );
 }
