@@ -1,3 +1,10 @@
 export { JournalProgress } from "./JournalProgress";
 export { AiNotesStatus } from "./AiNotesStatus";
 export { JournalEmptyState } from "./JournalEmptyState";
+export { EmotionalStateSelector } from "./EmotionalStateSelector";
+export { ThesisInput } from "./ThesisInput";
+export { MarketContextExpander } from "./MarketContextExpander";
+export { TradeContextBanner } from "./TradeContextBanner";
+export { StickyActionBar } from "./StickyActionBar";
+export { ArchetypeScoreCard, MetricsGrid, InsightCardItem } from "./JournalOutputBlocks";
+export { JournalHistoryList } from "./JournalHistoryList";
