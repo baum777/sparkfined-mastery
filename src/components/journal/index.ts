@@ -19,3 +19,12 @@ export { MarketContextPanel } from "./MarketContextPanel";
 export { AiNotesSection } from "./AiNotesSection";
 export { RecentEntriesSection } from "./RecentEntriesSection";
 export { JournalEntryForm } from "./JournalEntryForm";
+
+// Auto-Capture Journal Components
+export { PendingCard } from "./PendingCard";
+export { PendingList } from "./PendingList";
+export { LogbookList } from "./LogbookList";
+export { ConfirmedJournalList } from "./ConfirmedJournalList";
+export { QuickLogModal } from "./QuickLogModal";
+export { showFullExitToast } from "./FullExitToast";
+export { JournalExtendedSettings } from "./JournalExtendedSettings";
