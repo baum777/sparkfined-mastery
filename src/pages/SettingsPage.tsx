@@ -1,4 +1,5 @@
-import { Settings } from "lucide-react";
+import { Settings, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   SettingsSection,
   ThemeToggle,
@@ -125,6 +126,19 @@ export default function SettingsPage() {
       >
         <FactoryReset />
       </SettingsSection>
+
+      {/* Update App */}
+      <div className="pt-4 pb-8">
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full gap-2 border-border-sf-moderate bg-surface-subtle hover:bg-surface-elevated"
+          data-testid="settings-update-app-btn"
+        >
+          <RefreshCw className="h-4 w-4" />
+          Update app
+        </Button>
+      </div>
     </div>
   );
 }
