@@ -11,6 +11,7 @@ export { JournalHistoryList } from "./JournalHistoryList";
 
 // New Journal Entry Components
 export { JournalHeader, type JournalTemplate } from "./JournalHeader";
+export { CreateTemplateModal } from "./CreateTemplateModal";
 export { EmotionalStateCards, type EmotionalStateValue } from "./EmotionalStateCards";
 export { ConfidenceSlider } from "./ConfidenceSlider";
 export { AdditionalSliders } from "./AdditionalSliders";
