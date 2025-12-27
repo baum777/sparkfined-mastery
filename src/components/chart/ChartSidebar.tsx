@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { TrendingUp, Clock, ChevronRight } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const MARKETS = [
@@ -7,12 +6,6 @@ const MARKETS = [
   { symbol: "ETH/USD", name: "Ethereum", change: -1.2 },
   { symbol: "SOL/USD", name: "Solana", change: 5.1 },
   { symbol: "AVAX/USD", name: "Avalanche", change: -0.8 },
-];
-
-const SESSIONS = [
-  { id: "asia", label: "Asia", time: "00:00 - 08:00", emoji: "🌏", active: false },
-  { id: "london", label: "London", time: "08:00 - 16:00", emoji: "🇪🇺", active: true },
-  { id: "newyork", label: "New York", time: "13:00 - 21:00", emoji: "🇺🇸", active: true },
 ];
 
 interface ChartSidebarProps {
@@ -65,35 +58,6 @@ export function ChartSidebar({ selectedMarket, onMarketSelect, className }: Char
                 {market.change >= 0 ? "+" : ""}{market.change}%
               </span>
             </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Sessions Section */}
-      <div>
-        <h3 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase text-muted-foreground">
-          <Clock className="h-3.5 w-3.5" />
-          Sessions
-        </h3>
-        <div className="flex flex-col gap-2">
-          {SESSIONS.map((session) => (
-            <div
-              key={session.id}
-              className={cn(
-                "flex items-center gap-2 rounded-md px-3 py-2 text-sm",
-                session.active ? "bg-secondary/50" : "opacity-50"
-              )}
-              data-testid={`chart-session-${session.id}`}
-            >
-              <span className="text-base">{session.emoji}</span>
-              <div className="flex flex-col">
-                <span className="font-medium">{session.label}</span>
-                <span className="text-xs text-muted-foreground">{session.time}</span>
-              </div>
-              {session.active && (
-                <span className="ml-auto h-2 w-2 rounded-full bg-success animate-pulse" />
-              )}
-            </div>
           ))}
         </div>
       </div>

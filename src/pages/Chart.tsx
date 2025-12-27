@@ -3,13 +3,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { TrendingUp } from "lucide-react";
 import { ChartTopBar } from "@/components/chart/ChartTopBar";
 import { ChartSidebar } from "@/components/chart/ChartSidebar";
+import { ChartRightPanel } from "@/components/chart/ChartRightPanel";
 import { ChartBottomTabs } from "@/components/chart/ChartBottomTabs";
 import { ChartReplayControls } from "@/components/chart/ChartReplayControls";
 import { ChartToolbar } from "@/components/chart";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 
 export default function Chart() {
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ export default function Chart() {
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Desktop Sidebar */}
+        {/* Desktop Left Sidebar - Markets */}
         {!isMobile && (
           <ChartSidebar
             selectedMarket={selectedMarket}
@@ -168,13 +168,18 @@ export default function Chart() {
           {/* Bottom Tabs */}
           <ChartBottomTabs symbol={selectedMarket} />
         </div>
+
+        {/* Desktop Right Panel - Tools & Indicators */}
+        {!isMobile && (
+          <ChartRightPanel className="w-56 shrink-0" />
+        )}
       </div>
 
       {/* Mobile Sidebar Sheet */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetContent side="left" className="w-64 p-0">
           <SheetHeader className="border-b border-border p-4">
-            <SheetTitle>Markets & Sessions</SheetTitle>
+            <SheetTitle>Markets</SheetTitle>
           </SheetHeader>
           <ChartSidebar
             selectedMarket={selectedMarket}

@@ -5,3 +5,4 @@ export { ChartSidebar } from "./ChartSidebar";
 export { ChartBottomTabs } from "./ChartBottomTabs";
 export { ChartReplayControls } from "./ChartReplayControls";
 export { ChartTopBar } from "./ChartTopBar";
+export { ChartRightPanel } from "./ChartRightPanel";
