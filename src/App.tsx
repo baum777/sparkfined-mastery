@@ -30,15 +30,18 @@ const App = () => (
               {/* Primary tabs */}
               <Route path="/" element={<Dashboard />} />
               <Route path="/journal" element={<Journal />} />
-              <Route path="/learn" element={<Learn />} />
+              <Route path="/lessons" element={<Learn />} />
               <Route path="/chart" element={<Chart />} />
+              <Route path="/chart/replay" element={<Replay />} />
               <Route path="/alerts" element={<Alerts />} />
               <Route path="/settings" element={<SettingsPage />} />
               {/* Secondary tabs (Advanced) */}
               <Route path="/watchlist" element={<Watchlist />} />
               <Route path="/oracle" element={<Oracle />} />
-              {/* Replay is a Chart sub-feature, not in global nav */}
+              {/* Legacy /replay redirect to /chart/replay */}
               <Route path="/replay" element={<Replay />} />
+              {/* Alias: /learn redirects to /lessons */}
+              <Route path="/learn" element={<Learn />} />
             </Route>
             {/* Catch-all for unknown routes */}
             <Route path="*" element={<NotFound />} />

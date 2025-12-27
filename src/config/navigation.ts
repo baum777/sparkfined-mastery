@@ -33,7 +33,7 @@ export const primaryNavItems: NavItem[] = [
   },
   {
     title: "Learn",
-    path: "/learn",
+    path: "/lessons",
     icon: GraduationCap,
     testId: "nav-learn",
   },
@@ -42,7 +42,7 @@ export const primaryNavItems: NavItem[] = [
     path: "/chart",
     icon: LineChart,
     testId: "nav-chart",
-    activeRoutes: ["/chart", "/replay"],
+    activeRoutes: ["/chart", "/chart/replay", "/replay"],
   },
   {
     title: "Alerts",

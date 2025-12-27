@@ -6,3 +6,8 @@ export { MasteryProgressCard } from "./MasteryProgressCard";
 export { DashboardEmptyState } from "./DashboardEmptyState";
 export { HoldingsCard } from "./HoldingsCard";
 export { LastTradesCard } from "./LastTradesCard";
+export { DashboardHeader } from "./DashboardHeader";
+export { KpiStrip } from "./KpiStrip";
+export { DailyBiasCard } from "./DailyBiasCard";
+export { DashboardFab } from "./DashboardFab";
+export { JournalSnapshotCard } from "./JournalSnapshotCard";
