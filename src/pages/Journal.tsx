@@ -1,43 +1,50 @@
-import { TradeEntryForm } from "@/features/journal/components";
-import { JournalProgress, JournalEmptyState } from "@/components/journal";
-import { useTradesStore, type Trade } from "@/features/journal";
+import { JournalEntryForm, RecentEntriesSection } from "@/components/journal";
+import { useTradesStore } from "@/features/journal";
 import { toast } from "@/hooks/use-toast";
 
 export default function Journal() {
   const { trades, addTrade } = useTradesStore();
 
-  const handleTradeSubmit = (data: Omit<Trade, "id" | "createdAt">) => {
-    addTrade(data);
+  const handleEntrySubmit = (data: any) => {
+    addTrade({
+      asset: "Entry",
+      direction: "long",
+      entryPrice: "0",
+      entryDate: new Date().toISOString().split("T")[0],
+      notes: data.reasoning,
+      tags: data.tags.join(", "),
+    });
     toast({
-      title: "Trade logged",
-      description: "Your trade has been saved successfully.",
+      title: "Entry logged",
+      description: "Your journal entry has been saved successfully.",
     });
   };
 
+  // Transform trades to recent entries format
+  const recentEntries = trades.slice(-10).reverse().map((trade) => ({
+    id: trade.id,
+    asset: trade.asset,
+    direction: trade.direction,
+    createdAt: trade.createdAt,
+    pnl: trade.pnl,
+    tags: trade.tags?.split(",").map((t) => t.trim()).filter(Boolean),
+  }));
+
   return (
     <div className="flex flex-col gap-6 p-4 sm:p-6" data-testid="page-journal">
-      {/* Header with Progress */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Journal</h1>
-          <p className="text-sm text-muted-foreground">
-            Log and review your trades with notes and custom tags.
-          </p>
-        </div>
-        <JournalProgress currentStep="state" />
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold">Journal</h1>
+        <p className="text-sm text-muted-foreground">
+          Document your trades, track emotions, and build self-awareness.
+        </p>
       </div>
 
-      {/* Trade Entry Form */}
-      <TradeEntryForm onSubmit={handleTradeSubmit} />
+      {/* Main Entry Form */}
+      <JournalEntryForm onSubmit={handleEntrySubmit} />
 
-      {/* Trade List or Empty State */}
-      {trades.length === 0 ? (
-        <JournalEmptyState />
-      ) : (
-        <div className="text-sm text-muted-foreground">
-          {trades.length} trade{trades.length !== 1 ? "s" : ""} logged
-        </div>
-      )}
+      {/* Recent Entries */}
+      <RecentEntriesSection entries={recentEntries} />
     </div>
   );
 }
