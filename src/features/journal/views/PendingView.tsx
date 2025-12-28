@@ -1,25 +1,16 @@
 import { useMemo } from "react";
 import { Inbox } from "lucide-react";
 import { PendingEntryCard } from "../components/PendingEntryCard";
-import type { AutoCapturedEntry, ExtendedDataSettings } from "@/features/journal/types";
+import { useJournalStore } from "../useJournalStore";
+import type { AutoCapturedEntry } from "@/features/journal/types";
 
 interface PendingViewProps {
   entries?: AutoCapturedEntry[];
-  extendedSettings?: ExtendedDataSettings;
   onConfirm?: (id: string) => void;
   onArchive?: (id: string) => void;
   onDelete?: (id: string) => void;
   onRefreshExtended?: (id: string) => void;
 }
-
-// Default extended settings
-const DEFAULT_SETTINGS: ExtendedDataSettings = {
-  preset: "default",
-  marketContext: true,
-  technicalIndicators: true,
-  onChainMetrics: false,
-  customTimeframes: ["1h", "4h", "1d"],
-};
 
 // Mock data for development
 const MOCK_ENTRIES: AutoCapturedEntry[] = [
@@ -83,12 +74,13 @@ const MOCK_ENTRIES: AutoCapturedEntry[] = [
 
 export function PendingView({ 
   entries = MOCK_ENTRIES,
-  extendedSettings = DEFAULT_SETTINGS,
   onConfirm = () => {}, 
   onArchive = () => {}, 
   onDelete = () => {},
   onRefreshExtended,
 }: PendingViewProps) {
+  // Get extended settings from store
+  const { extendedSettings } = useJournalStore();
   // Sort by timeLeft ascending (most urgent first)
   const sortedEntries = useMemo(() => {
     return [...entries].sort((a, b) => {
