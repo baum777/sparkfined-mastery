@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useHandbookPanel } from "@/hooks/useHandbookPanel";
 import { useHandbookActionDispatcher } from "@/lib/handbook/dispatchHandbookAction";
 import { useHandbookContext, checkGate } from "@/lib/handbook/handbookContext";
+import { DemoGateToggle } from "./DemoGateToggle";
 import { ChevronDown, ChevronRight, BookOpen, CheckCircle2, Circle, AlertTriangle, ExternalLink } from "lucide-react";
 import type { HandbookFlow, HandbookStep, HandbookPrerequisite, HandbookPitfall } from "@/lib/handbook/types";
 
@@ -231,8 +233,10 @@ function HandbookPanelContent() {
             {spec.flows.map((flow) => <FlowSection key={flow.id} flow={flow} />)}
           </TabsContent>
 
-          <TabsContent value="checklist" className="mt-0 space-y-2">
+          <TabsContent value="checklist" className="mt-0 space-y-3">
             <ChecklistTab prerequisites={spec.prerequisites} />
+            <Separator className="my-4" />
+            <DemoGateToggle />
           </TabsContent>
 
           <TabsContent value="shortcuts" className="mt-0 space-y-2">
