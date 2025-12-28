@@ -4,6 +4,7 @@ import type { HandbookContext } from "@/lib/handbook/types";
 // Keys for localStorage
 const WALLET_KEY = "sparkfined_connected_wallet";
 const WATCHLIST_KEY = "sparkfined_watchlist";
+const ALERTS_KEY = "sparkfined_alerts";
 const DEMO_OVERRIDES_KEY = "sparkfined_handbook_demo_overrides";
 
 // Demo mode state
@@ -13,16 +14,43 @@ let demoOverrides: Partial<HandbookContext> = {};
 // Subscribe to storage changes
 const listeners = new Set<() => void>();
 
+// Initialize browser event listeners once
+let initialized = false;
+
+function initBrowserListeners() {
+  if (initialized || typeof window === "undefined") return;
+  initialized = true;
+
+  // Listen to online/offline changes
+  window.addEventListener("online", notifyContextChange);
+  window.addEventListener("offline", notifyContextChange);
+
+  // Listen to storage events for cross-tab sync
+  window.addEventListener("storage", (e) => {
+    // Only notify if relevant keys changed
+    const relevantKeys = [
+      WALLET_KEY,
+      WATCHLIST_KEY,
+      ALERTS_KEY,
+      "sparkfined_pending_entries",
+      "sparkfined_confirmed_entries",
+      "sparkfined_archived_entries",
+    ];
+    if (e.key && relevantKeys.includes(e.key)) {
+      notifyContextChange();
+    }
+  });
+
+  // Listen to URL changes (for hasSelectedToken)
+  window.addEventListener("popstate", notifyContextChange);
+}
+
 function subscribe(listener: () => void) {
   listeners.add(listener);
-  
-  // Also listen to storage events for cross-tab sync
-  const handleStorage = () => listener();
-  window.addEventListener("storage", handleStorage);
+  initBrowserListeners();
   
   return () => {
     listeners.delete(listener);
-    window.removeEventListener("storage", handleStorage);
   };
 }
 
@@ -48,12 +76,12 @@ function getRealContext(): HandbookContext {
     const archivedCount = archivedEntries ? JSON.parse(archivedEntries).length : 0;
     const hasEntries = pendingCount + confirmedCount + archivedCount > 0;
     
-    // Check watchlist
+    // Check watchlist (from localStorage)
     const watchlistData = localStorage.getItem(WATCHLIST_KEY);
     const hasWatchlist = watchlistData ? JSON.parse(watchlistData).length > 0 : false;
     
-    // Check alerts
-    const alertsData = localStorage.getItem("sparkfined_alerts");
+    // Check alerts (from localStorage)
+    const alertsData = localStorage.getItem(ALERTS_KEY);
     const hasAlerts = alertsData ? JSON.parse(alertsData).length > 0 : false;
     
     // Check online status

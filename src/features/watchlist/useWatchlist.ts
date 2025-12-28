@@ -1,6 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import type { WatchlistItem, TrendDirection } from './types';
+import { notifyContextChange } from "@/lib/handbook/handbookContext";
+import type { WatchlistItem } from './types';
+
+const STORAGE_KEY = "sparkfined_watchlist";
 
 const MOCK_WATCHLIST: WatchlistItem[] = [
   {
@@ -28,13 +31,46 @@ const MOCK_WATCHLIST: WatchlistItem[] = [
   },
 ];
 
+// Load initial data from localStorage or use mock
+function loadWatchlist(): WatchlistItem[] {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Convert date strings back to Date objects
+      return parsed.map((item: WatchlistItem) => ({
+        ...item,
+        addedAt: new Date(item.addedAt),
+      }));
+    }
+  } catch {
+    // Ignore parse errors
+  }
+  // Return mock and persist it
+  saveWatchlist(MOCK_WATCHLIST);
+  return MOCK_WATCHLIST;
+}
+
+function saveWatchlist(items: WatchlistItem[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    notifyContextChange();
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 export function useWatchlist() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [items, setItems] = useState<WatchlistItem[]>(MOCK_WATCHLIST);
+  const [items, setItems] = useState<WatchlistItem[]>(() => loadWatchlist());
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Sync selected from URL on mount only (empty deps = no loops)
-  // One-way read: URL → state on initial load; state → URL on user selection
+  // Persist whenever items change
+  useEffect(() => {
+    saveWatchlist(items);
+  }, [items]);
+
+  // Sync selected from URL on mount only
   useEffect(() => {
     const urlSelected = searchParams.get('selected');
     if (urlSelected) {
@@ -44,9 +80,8 @@ export function useWatchlist() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Intentionally empty: read URL once on mount to avoid loops
+  }, []);
 
-  // Update URL when selection changes
   const selectItem = useCallback(
     (id: string | null) => {
       setSelectedId(id);

@@ -1,5 +1,8 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { notifyContextChange } from "@/lib/handbook/handbookContext";
 import type { Alert, AlertStatus } from './types';
+
+const STORAGE_KEY = "sparkfined_alerts";
 
 const MOCK_ALERTS: Alert[] = [
   {
@@ -28,11 +31,44 @@ const MOCK_ALERTS: Alert[] = [
   },
 ];
 
+// Load initial data from localStorage or use mock
+function loadAlerts(): Alert[] {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return parsed.map((alert: Alert) => ({
+        ...alert,
+        createdAt: new Date(alert.createdAt),
+      }));
+    }
+  } catch {
+    // Ignore parse errors
+  }
+  // Return mock and persist it
+  saveAlerts(MOCK_ALERTS);
+  return MOCK_ALERTS;
+}
+
+function saveAlerts(alerts: Alert[]) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(alerts));
+    notifyContextChange();
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 export type FilterType = 'all' | AlertStatus;
 
 export function useAlerts() {
-  const [alerts, setAlerts] = useState<Alert[]>(MOCK_ALERTS);
+  const [alerts, setAlerts] = useState<Alert[]>(() => loadAlerts());
   const [filter, setFilter] = useState<FilterType>('all');
+
+  // Persist whenever alerts change
+  useEffect(() => {
+    saveAlerts(alerts);
+  }, [alerts]);
 
   const filteredAlerts = useMemo(() => {
     if (filter === 'all') return alerts;
