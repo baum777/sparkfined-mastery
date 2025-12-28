@@ -1,0 +1,132 @@
+{
+  "id": "journal",
+  "route": "/journal",
+  "title": "Journal",
+  "purpose": "Log, review, and learn from every trade — the core of your mastery journey.",
+  "prerequisites": [],
+  "flows": [
+    {
+      "id": "log-trade",
+      "title": "Log a Trade",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "open-form",
+          "title": "Open Entry Form",
+          "userAction": "Click 'Journal Entry' button in header",
+          "systemBehavior": "Opens the journal entry modal with all sections",
+          "outcome": "Ready to document your trade"
+        },
+        {
+          "id": "fill-basics",
+          "title": "Fill Basic Info",
+          "userAction": "Enter token, entry price, size",
+          "systemBehavior": "Validates inputs and shows preview",
+          "outcome": "Core trade data captured"
+        },
+        {
+          "id": "add-thesis",
+          "title": "Add Your Thesis",
+          "userAction": "Describe why you took this trade",
+          "systemBehavior": "Saves narrative for future review",
+          "outcome": "Decision rationale documented"
+        },
+        {
+          "id": "set-emotion",
+          "title": "Set Emotional State",
+          "userAction": "Select how you felt taking this trade",
+          "systemBehavior": "Tags entry with emotion for pattern analysis",
+          "outcome": "Emotional awareness tracked"
+        },
+        {
+          "id": "save-entry",
+          "title": "Save Entry",
+          "userAction": "Click 'Save' or 'Submit'",
+          "systemBehavior": "Entry saved to pending or confirmed list",
+          "outcome": "Trade logged successfully"
+        }
+      ],
+      "branches": [
+        {
+          "when": "Trade has multiple exits",
+          "steps": [
+            {
+              "id": "partial-exit",
+              "title": "Log Partial Exit",
+              "userAction": "Add exit with partial size",
+              "systemBehavior": "Calculates partial PnL, keeps position open",
+              "outcome": "Partial profit/loss tracked"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "review-pending",
+      "title": "Review Pending Entries",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "switch-tab",
+          "title": "Switch to Pending Tab",
+          "userAction": "Click 'Pending' tab",
+          "systemBehavior": "Shows all unconfirmed entries",
+          "outcome": "See trades needing attention"
+        },
+        {
+          "id": "expand-entry",
+          "title": "Expand Entry Details",
+          "userAction": "Click on a pending entry",
+          "systemBehavior": "Shows extended sections (market context, notes)",
+          "outcome": "Full trade context visible"
+        }
+      ]
+    },
+    {
+      "id": "analyze-history",
+      "title": "Analyze Trade History",
+      "level": "advanced",
+      "steps": [
+        {
+          "id": "open-logbook",
+          "title": "Open Logbook View",
+          "userAction": "Switch to Logbook tab",
+          "systemBehavior": "Shows filterable list of all trades",
+          "outcome": "Full history accessible"
+        },
+        {
+          "id": "apply-filters",
+          "title": "Apply Filters",
+          "userAction": "Set date range, token, or PnL filter",
+          "systemBehavior": "Filters list in real-time",
+          "outcome": "Find specific trades quickly"
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" },
+    { "keys": "N", "action": "New journal entry" },
+    { "keys": "Esc", "action": "Close modal/sheet" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Entry not saving",
+      "fix": "Ensure required fields (token, entry price) are filled"
+    },
+    {
+      "problem": "Can't find old trade",
+      "fix": "Use the Logbook tab with date filters to search history"
+    },
+    {
+      "problem": "PnL showing wrong",
+      "fix": "Check if exit price and size are correctly entered"
+    }
+  ],
+  "glossary": [
+    { "term": "Pending", "meaning": "Trades awaiting confirmation or additional data" },
+    { "term": "Confirmed", "meaning": "Completed trades with all exit data" },
+    { "term": "Thesis", "meaning": "Your reasoning and analysis for entering a trade" },
+    { "term": "Emotional State", "meaning": "How you felt when making trading decisions" }
+  ]
+}

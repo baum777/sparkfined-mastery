@@ -1,32 +1,47 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { handleNewTransaction } from './journal-entry-extended-logic';
-import { db } from './journal-db-schema';
 
-// Mock the DB
-vi.mock('./journal-db-schema', () => ({
-  db: {
-    entries: {
-      where: vi.fn().mockReturnThis(),
-      equals: vi.fn().mockReturnThis(),
-      filter: vi.fn().mockReturnThis(),
-      first: vi.fn(),
-      add: vi.fn(),
-      update: vi.fn(),
-    },
-    txEvents: {
-      get: vi.fn(),
-      add: vi.fn(),
+// Create mock functions at module level
+const mockFirst = vi.fn();
+const mockAdd = vi.fn();
+const mockUpdate = vi.fn();
+const mockTxGet = vi.fn();
+const mockTxAdd = vi.fn();
+
+// Mock the DB with chainable methods
+vi.mock('./journal-db-schema', () => {
+  const chain = {
+    where: vi.fn(() => chain),
+    equals: vi.fn(() => chain),
+    filter: vi.fn(() => chain),
+    first: () => mockFirst(),
+    add: (data: any) => mockAdd(data),
+    update: (id: any, data: any) => mockUpdate(id, data),
+  };
+  
+  return {
+    db: {
+      entries: chain,
+      txEvents: {
+        get: (id: any) => mockTxGet(id),
+        add: (data: any) => mockTxAdd(data),
+      }
     }
-  }
-}));
+  };
+});
 
 describe('Journal Entry Extended Logic', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockFirst.mockReset();
+    mockAdd.mockReset();
+    mockUpdate.mockReset();
+    mockTxGet.mockReset();
+    mockTxAdd.mockReset();
   });
 
   it('should ignore duplicate transactions', async () => {
-    (db.txEvents.get as any).mockResolvedValue({ signature: 'sig1' });
+    mockTxGet.mockResolvedValue({ signature: 'sig1' });
     
     await handleNewTransaction({
       signature: 'sig1',
@@ -40,13 +55,13 @@ describe('Journal Entry Extended Logic', () => {
       dex: null
     });
 
-    expect(db.txEvents.add).not.toHaveBeenCalled();
-    expect(db.entries.add).not.toHaveBeenCalled();
+    expect(mockTxAdd).not.toHaveBeenCalled();
+    expect(mockAdd).not.toHaveBeenCalled();
   });
 
   it('should create new entry if no active entry exists', async () => {
-    (db.txEvents.get as any).mockResolvedValue(undefined);
-    (db.entries.first as any).mockResolvedValue(undefined); // No active entry
+    mockTxGet.mockResolvedValue(undefined);
+    mockFirst.mockResolvedValue(undefined); // No active entry
 
     await handleNewTransaction({
       signature: 'sig2',
@@ -60,8 +75,8 @@ describe('Journal Entry Extended Logic', () => {
       dex: null
     });
 
-    expect(db.txEvents.add).toHaveBeenCalled();
-    expect(db.entries.add).toHaveBeenCalledWith(expect.objectContaining({
+    expect(mockTxAdd).toHaveBeenCalled();
+    expect(mockAdd).toHaveBeenCalledWith(expect.objectContaining({
       status: 'active',
       wallet: 'w1',
       tokenMint: 'm1',
@@ -70,8 +85,8 @@ describe('Journal Entry Extended Logic', () => {
   });
 
   it('should update existing active entry', async () => {
-    (db.txEvents.get as any).mockResolvedValue(undefined);
-    (db.entries.first as any).mockResolvedValue({
+    mockTxGet.mockResolvedValue(undefined);
+    mockFirst.mockResolvedValue({
       id: 'existing-id',
       status: 'active',
       wallet: 'w1',
@@ -96,7 +111,7 @@ describe('Journal Entry Extended Logic', () => {
       dex: null
     });
 
-    expect(db.entries.update).toHaveBeenCalledWith('existing-id', expect.objectContaining({
+    expect(mockUpdate).toHaveBeenCalledWith('existing-id', expect.objectContaining({
       totalSellAmount: 1,
       totalSellUsd: 110
     }));

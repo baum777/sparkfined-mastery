@@ -1,0 +1,102 @@
+{
+  "id": "dashboard",
+  "route": "/",
+  "title": "Dashboard",
+  "purpose": "Your daily trading command center — see KPIs, recent trades, and quick actions at a glance.",
+  "prerequisites": [
+    {
+      "id": "wallet",
+      "label": "Connect a wallet",
+      "gate": "walletConnected",
+      "hint": "Connect your wallet to see holdings and sync trades",
+      "cta": { "label": "Connect Wallet", "action": "open:modal/connect-wallet" }
+    }
+  ],
+  "flows": [
+    {
+      "id": "daily-review",
+      "title": "Daily Review",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "check-kpis",
+          "title": "Check KPIs",
+          "userAction": "Glance at the KPI strip at the top",
+          "systemBehavior": "Displays today's PnL, win rate, and open positions",
+          "outcome": "Quick pulse on portfolio health"
+        },
+        {
+          "id": "review-trades",
+          "title": "Review Recent Trades",
+          "userAction": "Scroll to Last Trades card",
+          "systemBehavior": "Shows last 5 trades with PnL badges",
+          "outcome": "Spot any missed journal entries"
+        },
+        {
+          "id": "check-alerts",
+          "title": "Check Active Alerts",
+          "userAction": "View Alerts Snapshot card",
+          "systemBehavior": "Lists triggered and pending alerts",
+          "outcome": "Stay informed on price triggers"
+        }
+      ]
+    },
+    {
+      "id": "quick-journal",
+      "title": "Quick Journal Entry",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "open-fab",
+          "title": "Open Quick Actions",
+          "userAction": "Tap the FAB button (bottom right)",
+          "systemBehavior": "Opens quick action menu",
+          "outcome": "Access to common actions"
+        },
+        {
+          "id": "select-journal",
+          "title": "Select New Entry",
+          "userAction": "Choose 'New Journal Entry'",
+          "systemBehavior": "Opens journal quick log modal",
+          "outcome": "Ready to log a trade",
+          "cta": { "label": "Open Journal", "action": "nav:/journal" }
+        }
+      ]
+    },
+    {
+      "id": "customize-dashboard",
+      "title": "Customize Dashboard",
+      "level": "advanced",
+      "steps": [
+        {
+          "id": "settings",
+          "title": "Open Settings",
+          "userAction": "Navigate to Settings",
+          "systemBehavior": "Shows all configuration options",
+          "outcome": "Access dashboard preferences",
+          "cta": { "label": "Go to Settings", "action": "nav:/settings" }
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" },
+    { "keys": "J", "action": "Open Journal" },
+    { "keys": "C", "action": "Open Chart" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "KPIs show $0 or empty",
+      "fix": "Connect a wallet and ensure you have tracked trades in the journal"
+    },
+    {
+      "problem": "Holdings not updating",
+      "fix": "Check if wallet is still connected in Settings → Connected Wallets"
+    }
+  ],
+  "glossary": [
+    { "term": "PnL", "meaning": "Profit and Loss — the net gain or loss from your trades" },
+    { "term": "Win Rate", "meaning": "Percentage of trades that were profitable" },
+    { "term": "KPI", "meaning": "Key Performance Indicator — a measurable value showing trading performance" }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "lessons",
+  "route": "/lessons",
+  "title": "Learn",
+  "purpose": "Master trading concepts through structured lessons — unlock new skills as you progress.",
+  "prerequisites": [],
+  "flows": [
+    {
+      "id": "browse-lessons",
+      "title": "Browse Lessons",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "view-categories",
+          "title": "View Categories",
+          "userAction": "Browse lesson cards on the page",
+          "systemBehavior": "Shows lessons grouped by topic and difficulty",
+          "outcome": "Find relevant learning content"
+        },
+        {
+          "id": "check-progress",
+          "title": "Check Progress",
+          "userAction": "Look for progress indicators on cards",
+          "systemBehavior": "Shows completion status and unlocked content",
+          "outcome": "Track your learning journey"
+        }
+      ]
+    },
+    {
+      "id": "complete-lesson",
+      "title": "Complete a Lesson",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "open-lesson",
+          "title": "Open Lesson",
+          "userAction": "Click on a lesson card",
+          "systemBehavior": "Opens lesson content with steps",
+          "outcome": "Ready to learn"
+        },
+        {
+          "id": "follow-steps",
+          "title": "Follow Steps",
+          "userAction": "Read and complete each section",
+          "systemBehavior": "Tracks progress through lesson",
+          "outcome": "Knowledge absorbed"
+        },
+        {
+          "id": "mark-complete",
+          "title": "Mark Complete",
+          "userAction": "Finish the lesson",
+          "systemBehavior": "Updates progress, may unlock new content",
+          "outcome": "Lesson completed, XP earned"
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Lesson locked",
+      "fix": "Complete prerequisite lessons to unlock advanced content"
+    }
+  ],
+  "glossary": [
+    { "term": "XP", "meaning": "Experience points earned by completing lessons and trades" },
+    { "term": "Unlock", "meaning": "Gaining access to new content by meeting requirements" }
+  ]
+}
