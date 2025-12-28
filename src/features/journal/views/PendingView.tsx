@@ -1,14 +1,25 @@
 import { useMemo } from "react";
 import { Inbox } from "lucide-react";
 import { PendingEntryCard } from "../components/PendingEntryCard";
-import type { AutoCapturedEntry } from "@/features/journal/types";
+import type { AutoCapturedEntry, ExtendedDataSettings } from "@/features/journal/types";
 
 interface PendingViewProps {
   entries?: AutoCapturedEntry[];
+  extendedSettings?: ExtendedDataSettings;
   onConfirm?: (id: string) => void;
   onArchive?: (id: string) => void;
   onDelete?: (id: string) => void;
+  onRefreshExtended?: (id: string) => void;
 }
+
+// Default extended settings
+const DEFAULT_SETTINGS: ExtendedDataSettings = {
+  preset: "default",
+  marketContext: true,
+  technicalIndicators: true,
+  onChainMetrics: false,
+  customTimeframes: ["1h", "4h", "1d"],
+};
 
 // Mock data for development
 const MOCK_ENTRIES: AutoCapturedEntry[] = [
@@ -17,10 +28,16 @@ const MOCK_ENTRIES: AutoCapturedEntry[] = [
     token: { symbol: "BONK", name: "Bonk" },
     createdAt: new Date(Date.now() - 3600000).toISOString(),
     lastActivityAt: new Date(Date.now() - 1800000).toISOString(),
-    expiresAt: new Date(Date.now() + 1800000).toISOString(), // 30min left
+    expiresAt: new Date(Date.now() + 1800000).toISOString(),
     position: { avgEntry: 0.0000021, sizeUsd: 450 },
     pnl: { unrealizedUsd: 67.50, realizedUsd: 0, pct: 15 },
-    txs: [{ type: "BUY", time: new Date().toISOString(), amount: 21000000, priceUsd: 0.0000021, valueUsd: 450 }],
+    txs: [
+      { type: "BUY", time: new Date(Date.now() - 3600000).toISOString(), amount: 21000000, priceUsd: 0.0000021, valueUsd: 450 },
+    ],
+    extended: {
+      marketContext: { marketCap: 1200000000, marketCapCategory: "mid", volume24h: 89000000 },
+      technical: { rsi: 72, rsiCondition: "overbought" },
+    },
     status: "expiring",
     timeLeftMs: 1800000,
   },
@@ -29,10 +46,16 @@ const MOCK_ENTRIES: AutoCapturedEntry[] = [
     token: { symbol: "WIF", name: "dogwifhat" },
     createdAt: new Date(Date.now() - 7200000).toISOString(),
     lastActivityAt: new Date(Date.now() - 3600000).toISOString(),
-    expiresAt: new Date(Date.now() + 14400000).toISOString(), // 4h left
+    expiresAt: new Date(Date.now() + 14400000).toISOString(),
     position: { avgEntry: 2.34, sizeUsd: 1200 },
     pnl: { unrealizedUsd: -84, realizedUsd: 0, pct: -7 },
-    txs: [{ type: "BUY", time: new Date().toISOString(), amount: 512, priceUsd: 2.34, valueUsd: 1200 }],
+    txs: [
+      { type: "BUY", time: new Date(Date.now() - 7200000).toISOString(), amount: 512, priceUsd: 2.34, valueUsd: 1200 },
+    ],
+    extended: {
+      marketContext: { marketCap: 2400000000, marketCapCategory: "large", volume24h: 156000000 },
+      technical: { rsi: 45, rsiCondition: "neutral" },
+    },
     status: "active",
     timeLeftMs: 14400000,
   },
@@ -41,13 +64,17 @@ const MOCK_ENTRIES: AutoCapturedEntry[] = [
     token: { symbol: "POPCAT", name: "Popcat" },
     createdAt: new Date(Date.now() - 10800000).toISOString(),
     lastActivityAt: new Date(Date.now() - 600000).toISOString(),
-    expiresAt: new Date(Date.now() + 82800000).toISOString(), // 23h left
+    expiresAt: new Date(Date.now() + 82800000).toISOString(),
     position: { avgEntry: 0.89, sizeUsd: 890 },
     pnl: { unrealizedUsd: 0, realizedUsd: 178, pct: 20 },
     txs: [
       { type: "BUY", time: new Date(Date.now() - 10800000).toISOString(), amount: 1000, priceUsd: 0.89, valueUsd: 890 },
       { type: "SELL", time: new Date(Date.now() - 600000).toISOString(), amount: 1000, priceUsd: 1.068, valueUsd: 1068 },
     ],
+    extended: {
+      marketContext: { marketCap: 450000000, marketCapCategory: "small", volume24h: 32000000 },
+      technical: { rsi: 28, rsiCondition: "oversold" },
+    },
     status: "ready",
     timeLeftMs: 82800000,
     isFullExit: true,
@@ -55,10 +82,12 @@ const MOCK_ENTRIES: AutoCapturedEntry[] = [
 ];
 
 export function PendingView({ 
-  entries = MOCK_ENTRIES, 
+  entries = MOCK_ENTRIES,
+  extendedSettings = DEFAULT_SETTINGS,
   onConfirm = () => {}, 
   onArchive = () => {}, 
-  onDelete = () => {} 
+  onDelete = () => {},
+  onRefreshExtended,
 }: PendingViewProps) {
   // Sort by timeLeft ascending (most urgent first)
   const sortedEntries = useMemo(() => {
@@ -95,9 +124,11 @@ export function PendingView({
         <PendingEntryCard
           key={entry.id}
           entry={entry}
+          extendedSettings={extendedSettings}
           onConfirm={onConfirm}
           onArchive={onArchive}
           onDelete={onDelete}
+          onRefreshExtended={onRefreshExtended}
         />
       ))}
     </div>
