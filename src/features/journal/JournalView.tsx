@@ -91,7 +91,7 @@ export function JournalView({
       </TabsContent>
 
       <TabsContent value="logbook" className="mt-4">
-        <LogbookView count={archivedCount} />
+        <LogbookView />
       </TabsContent>
     </Tabs>
   );
