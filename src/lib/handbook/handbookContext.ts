@@ -4,6 +4,11 @@ import type { HandbookContext } from "@/lib/handbook/types";
 // Keys for localStorage
 const WALLET_KEY = "sparkfined_connected_wallet";
 const WATCHLIST_KEY = "sparkfined_watchlist";
+const DEMO_OVERRIDES_KEY = "sparkfined_handbook_demo_overrides";
+
+// Demo mode state
+let demoModeEnabled = false;
+let demoOverrides: Partial<HandbookContext> = {};
 
 // Subscribe to storage changes
 const listeners = new Set<() => void>();
@@ -21,7 +26,7 @@ function subscribe(listener: () => void) {
   };
 }
 
-function getSnapshot(): HandbookContext {
+function getRealContext(): HandbookContext {
   try {
     // Check wallet connection
     const walletData = localStorage.getItem(WALLET_KEY);
@@ -83,14 +88,83 @@ function getSnapshot(): HandbookContext {
   }
 }
 
+function getSnapshot(): HandbookContext {
+  const realContext = getRealContext();
+  
+  // If demo mode is enabled, merge overrides
+  if (demoModeEnabled) {
+    return { ...realContext, ...demoOverrides };
+  }
+  
+  return realContext;
+}
+
 // Trigger re-check when app state changes
 export function notifyContextChange() {
   listeners.forEach((listener) => listener());
 }
 
+// Demo mode controls
+export function isDemoModeEnabled(): boolean {
+  return demoModeEnabled;
+}
+
+export function enableDemoMode() {
+  demoModeEnabled = true;
+  // Load saved overrides
+  try {
+    const saved = localStorage.getItem(DEMO_OVERRIDES_KEY);
+    if (saved) {
+      demoOverrides = JSON.parse(saved);
+    }
+  } catch {
+    demoOverrides = {};
+  }
+  notifyContextChange();
+}
+
+export function disableDemoMode() {
+  demoModeEnabled = false;
+  notifyContextChange();
+}
+
+export function setDemoOverride<K extends keyof HandbookContext>(key: K, value: HandbookContext[K]) {
+  demoOverrides[key] = value;
+  // Persist to localStorage
+  try {
+    localStorage.setItem(DEMO_OVERRIDES_KEY, JSON.stringify(demoOverrides));
+  } catch {
+    // Ignore storage errors
+  }
+  notifyContextChange();
+}
+
+export function getDemoOverrides(): Partial<HandbookContext> {
+  return { ...demoOverrides };
+}
+
+export function resetDemoOverrides() {
+  demoOverrides = {};
+  try {
+    localStorage.removeItem(DEMO_OVERRIDES_KEY);
+  } catch {
+    // Ignore
+  }
+  notifyContextChange();
+}
+
 // Hook to get current handbook context
 export function useHandbookContext(): HandbookContext {
   return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+}
+
+// Hook for demo mode state
+export function useDemoMode(): boolean {
+  return useSyncExternalStore(
+    subscribe,
+    () => demoModeEnabled,
+    () => demoModeEnabled
+  );
 }
 
 // Helper to check a single gate
