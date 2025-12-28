@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { secondaryNavItems } from "@/config/navigation";
 import { Flame, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { HandbookTrigger } from "@/components/handbook";
 
 export function AppHeader() {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -37,19 +38,25 @@ export function AppHeader() {
         </div>
       </div>
 
-      {/* Mobile: Advanced menu trigger */}
-      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden text-text-secondary hover:text-text-primary hover:bg-surface-hover"
-            data-testid="mobile-advanced-trigger"
-          >
-            <MoreHorizontal className="h-5 w-5" />
-            <span className="sr-only">More options</span>
-          </Button>
-        </SheetTrigger>
+      <div className="flex items-center gap-2">
+        {/* Handbook trigger (desktop) */}
+        <div className="hidden md:flex">
+          <HandbookTrigger />
+        </div>
+
+        {/* Mobile: Advanced menu trigger */}
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+              data-testid="mobile-advanced-trigger"
+            >
+              <MoreHorizontal className="h-5 w-5" />
+              <span className="sr-only">More options</span>
+            </Button>
+          </SheetTrigger>
         <SheetContent 
           side="right" 
           className="w-64 bg-elevated border-l border-border-sf-subtle"
@@ -84,6 +91,7 @@ export function AppHeader() {
           </nav>
         </SheetContent>
       </Sheet>
+      </div>
     </header>
   );
 }

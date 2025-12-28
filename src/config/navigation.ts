@@ -7,6 +7,7 @@ import {
   Settings,
   Eye,
   Sparkles,
+  HelpCircle,
 } from "lucide-react";
 
 export interface NavItem {
@@ -70,5 +71,11 @@ export const secondaryNavItems: NavItem[] = [
     path: "/oracle",
     icon: Sparkles,
     testId: "nav-oracle",
+  },
+  {
+    title: "Handbook",
+    path: "/handbook",
+    icon: HelpCircle,
+    testId: "nav-handbook",
   },
 ];
