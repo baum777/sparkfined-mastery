@@ -10,14 +10,17 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { secondaryNavItems } from "@/config/navigation";
-import { Flame, MoreHorizontal } from "lucide-react";
+import { Flame, MoreHorizontal, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HandbookTrigger } from "@/components/handbook";
+import { useHandbookPanel } from "@/hooks/useHandbookPanel";
 
 export function AppHeader() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const location = useLocation();
+  const { open: openHandbook } = useHandbookPanel();
 
   return (
     <header className="nav-header flex items-center justify-between gap-4 px-4 md:px-6">
@@ -88,6 +91,20 @@ export function AppHeader() {
                 </NavLink>
               );
             })}
+            {/* Mobile handbook trigger */}
+            <Separator className="my-3 bg-border-sf-subtle" />
+            <button
+              onClick={() => {
+                setSheetOpen(false);
+                openHandbook();
+              }}
+              className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-150 w-full"
+              data-testid="handbook-trigger-mobile"
+            >
+              <HelpCircle className="h-5 w-5" />
+              <span>Handbook</span>
+              <kbd className="ml-auto text-[10px] text-text-tertiary bg-surface px-1.5 py-0.5 rounded">?</kbd>
+            </button>
           </nav>
         </SheetContent>
       </Sheet>
