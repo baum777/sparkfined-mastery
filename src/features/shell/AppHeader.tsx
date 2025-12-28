@@ -19,19 +19,21 @@ export function AppHeader() {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-40 flex h-14 items-center justify-between gap-4 border-b border-border bg-background/95 backdrop-blur-sm px-4 md:px-6">
+    <header className="nav-header flex items-center justify-between gap-4 px-4 md:px-6">
       <div className="flex items-center gap-4">
         <SidebarTrigger 
-          className="hidden md:flex focus-visible:ring-offset-background" 
+          className="hidden md:flex text-text-secondary hover:text-text-primary hover:bg-surface-hover" 
           data-testid="sidebar-trigger" 
         />
         
         {/* Mobile logo */}
-        <div className="flex items-center gap-2 md:hidden">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-            <Flame className="h-5 w-5 text-primary-foreground" />
+        <div className="flex items-center gap-2.5 md:hidden">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand shadow-glow-brand">
+            <Flame className="h-5 w-5 text-black" />
           </div>
-          <span className="text-lg font-semibold text-foreground">Sparkfined</span>
+          <span className="text-lg font-semibold text-text-primary tracking-tight">
+            Sparkfined
+          </span>
         </div>
       </div>
 
@@ -41,16 +43,21 @@ export function AppHeader() {
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="md:hidden text-text-secondary hover:text-text-primary hover:bg-surface-hover"
             data-testid="mobile-advanced-trigger"
           >
             <MoreHorizontal className="h-5 w-5" />
             <span className="sr-only">More options</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-64 bg-card border-l border-border">
+        <SheetContent 
+          side="right" 
+          className="w-64 bg-elevated border-l border-border-sf-subtle"
+        >
           <SheetHeader>
-            <SheetTitle className="text-card-foreground">Advanced</SheetTitle>
+            <SheetTitle className="text-text-primary text-[10px] uppercase tracking-wider font-medium">
+              Advanced
+            </SheetTitle>
           </SheetHeader>
           <nav className="mt-4 flex flex-col gap-1" role="navigation" aria-label="Advanced navigation">
             {secondaryNavItems.map((item) => {
@@ -62,11 +69,11 @@ export function AppHeader() {
                   data-testid={`${item.testId}-mobile`}
                   onClick={() => setSheetOpen(false)}
                   className={cn(
-                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all duration-150",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60",
                     isActive
-                      ? "bg-accent text-accent-foreground font-medium"
-                      : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                      ? "bg-surface-hover text-brand border-l-2 border-brand shadow-glow"
+                      : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                   )}
                 >
                   <item.icon className="h-5 w-5" />

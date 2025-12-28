@@ -1,43 +1,25 @@
-import { TradeEntryForm } from "@/features/journal/components";
-import { JournalProgress, JournalEmptyState } from "@/components/journal";
-import { useTradesStore, type Trade } from "@/features/journal";
-import { toast } from "@/hooks/use-toast";
+import { JournalView } from "@/features/journal/JournalView";
+import { useJournalStore } from "@/features/journal/useJournalStore";
 
 export default function Journal() {
-  const { trades, addTrade } = useTradesStore();
-
-  const handleTradeSubmit = (data: Omit<Trade, "id" | "createdAt">) => {
-    addTrade(data);
-    toast({
-      title: "Trade logged",
-      description: "Your trade has been saved successfully.",
-    });
-  };
+  const { pendingCount, archivedCount, confirmedCount } = useJournalStore();
 
   return (
     <div className="flex flex-col gap-6 p-4 sm:p-6" data-testid="page-journal">
-      {/* Header with Progress */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Journal</h1>
-          <p className="text-sm text-muted-foreground">
-            Log and review your trades with notes and custom tags.
-          </p>
-        </div>
-        <JournalProgress currentStep="state" />
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold">Journal</h1>
+        <p className="text-sm text-muted-foreground">
+          Auto-capture trades, add notes, and build self-awareness.
+        </p>
       </div>
 
-      {/* Trade Entry Form */}
-      <TradeEntryForm onSubmit={handleTradeSubmit} />
-
-      {/* Trade List or Empty State */}
-      {trades.length === 0 ? (
-        <JournalEmptyState />
-      ) : (
-        <div className="text-sm text-muted-foreground">
-          {trades.length} trade{trades.length !== 1 ? "s" : ""} logged
-        </div>
-      )}
+      {/* Journal View with Segmented Control */}
+      <JournalView
+        confirmedCount={confirmedCount}
+        pendingCount={pendingCount}
+        archivedCount={archivedCount}
+      />
     </div>
   );
 }

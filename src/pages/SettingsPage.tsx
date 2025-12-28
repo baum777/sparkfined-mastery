@@ -1,11 +1,20 @@
-import { Settings } from "lucide-react";
+import { Settings, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   SettingsSection,
   ThemeToggle,
   DataExportImport,
   FactoryReset,
   SetupCompleteness,
+  ChartPrefsSettings,
+  NotificationsSettings,
+  ConnectedWalletsSettings,
+  MonitoringSettings,
+  TokenUsageSettings,
+  RiskDefaultsSettings,
+  AdvancedSettings,
 } from "@/components/settings";
+import { JournalDataSettings } from "@/features/settings";
 
 export default function SettingsPage() {
   return (
@@ -26,7 +35,7 @@ export default function SettingsPage() {
       {/* Setup completeness cue */}
       <SetupCompleteness />
 
-      {/* Theme - Priority 1 */}
+      {/* Appearance */}
       <SettingsSection
         title="Appearance"
         description="Customize how the app looks"
@@ -36,7 +45,70 @@ export default function SettingsPage() {
         <ThemeToggle />
       </SettingsSection>
 
-      {/* Export/Import - Priority 2 */}
+      {/* Chart Preferences */}
+      <SettingsSection
+        title="Chart preferences"
+        description="Default chart behavior and style"
+        data-testid="settings-section-chart"
+      >
+        <ChartPrefsSettings />
+      </SettingsSection>
+
+      {/* Notifications */}
+      <SettingsSection
+        title="Notifications"
+        description="Control alerts and reminders"
+        data-testid="settings-section-notifications"
+      >
+        <NotificationsSettings />
+      </SettingsSection>
+
+      {/* Connected Wallets */}
+      <SettingsSection
+        title="Connected wallets"
+        description="Manage wallet connections for tracking"
+        data-testid="settings-section-wallets"
+      >
+        <ConnectedWalletsSettings />
+      </SettingsSection>
+
+      {/* Monitoring */}
+      <SettingsSection
+        title="Monitoring"
+        description="Data refresh and performance settings"
+        data-testid="settings-section-monitoring"
+      >
+        <MonitoringSettings />
+      </SettingsSection>
+
+      {/* Journal Extended Data */}
+      <SettingsSection
+        title="Journal data"
+        description="Configure auto-captured trade enrichments"
+        data-testid="settings-section-journal"
+      >
+        <JournalDataSettings />
+      </SettingsSection>
+
+      {/* Token Usage */}
+      <SettingsSection
+        title="Token usage"
+        description="Track your AI token consumption"
+        data-testid="settings-section-tokens"
+      >
+        <TokenUsageSettings />
+      </SettingsSection>
+
+      {/* Risk Defaults */}
+      <SettingsSection
+        title="Risk defaults"
+        description="Default risk parameters for trades"
+        data-testid="settings-section-risk"
+      >
+        <RiskDefaultsSettings />
+      </SettingsSection>
+
+      {/* Backup & Restore */}
       <SettingsSection
         title="Backup & Restore"
         description="Export your data or restore from a backup"
@@ -46,21 +118,13 @@ export default function SettingsPage() {
         <DataExportImport />
       </SettingsSection>
 
-      {/* Preferences - Priority 3 (stub) */}
+      {/* Advanced/Diagnostics */}
       <SettingsSection
-        title="Preferences"
-        description="General app settings"
-        priority
-        data-testid="settings-section-preferences"
+        title="Advanced"
+        description="Diagnostics and developer tools"
+        data-testid="settings-section-advanced"
       >
-        <div className="flex items-center gap-2">
-          <span className="rounded border border-muted-foreground/30 bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-            Coming soon
-          </span>
-        </div>
-        <p className="text-sm text-muted-foreground italic mt-2">
-          Notifications, default views, and display options.
-        </p>
+        <AdvancedSettings />
       </SettingsSection>
 
       {/* Danger Zone */}
@@ -72,6 +136,19 @@ export default function SettingsPage() {
       >
         <FactoryReset />
       </SettingsSection>
+
+      {/* Update App */}
+      <div className="pt-4 pb-8">
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-full gap-2 border-border-sf-moderate bg-surface-subtle hover:bg-surface-elevated"
+          data-testid="settings-update-app-btn"
+        >
+          <RefreshCw className="h-4 w-4" />
+          Update app
+        </Button>
+      </div>
     </div>
   );
 }
