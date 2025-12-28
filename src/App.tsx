@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AppShell } from "@/features/shell";
 import { HandbookPanelProvider } from "@/hooks/useHandbookPanel";
-import { HandbookSheet } from "@/components/handbook";
+import { HandbookSheet, GlobalActionHandler } from "@/components/handbook";
 import Dashboard from "./pages/Dashboard";
 import Journal from "./pages/Journal";
 import Learn from "./pages/Learn";
@@ -30,6 +30,7 @@ const App = () => (
         <BrowserRouter>
           <HandbookPanelProvider>
             <HandbookSheet />
+            <GlobalActionHandler />
             <Routes>
               <Route element={<AppShell />}>
                 {/* Primary tabs */}
