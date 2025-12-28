@@ -15,7 +15,8 @@
           "title": "Open Quick Create",
           "userAction": "Click '+ New Alert' button",
           "systemBehavior": "Opens alert creation form",
-          "outcome": "Ready to set alert conditions"
+          "outcome": "Ready to set alert conditions",
+          "cta": { "label": "New Alert", "action": "open:modal/new-alert" }
         },
         {
           "id": "set-conditions",

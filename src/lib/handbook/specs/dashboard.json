@@ -57,9 +57,9 @@
           "id": "select-journal",
           "title": "Select New Entry",
           "userAction": "Choose 'New Journal Entry'",
-          "systemBehavior": "Opens journal quick log modal",
+          "systemBehavior": "Opens journal entry form",
           "outcome": "Ready to log a trade",
-          "cta": { "label": "Open Journal", "action": "nav:/journal" }
+          "cta": { "label": "New Entry", "action": "open:modal/journal-entry" }
         }
       ]
     },

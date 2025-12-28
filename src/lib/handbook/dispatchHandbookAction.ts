@@ -1,12 +1,46 @@
 import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
+
+// Global event emitter for handbook actions
+type ActionListener = (target: string) => void;
+const actionListeners: Record<string, Set<ActionListener>> = {};
+
+export function subscribeToAction(actionType: string, listener: ActionListener) {
+  if (!actionListeners[actionType]) {
+    actionListeners[actionType] = new Set();
+  }
+  actionListeners[actionType].add(listener);
+  return () => {
+    actionListeners[actionType].delete(listener);
+  };
+}
+
+function emitAction(actionType: string, target: string): boolean {
+  const listeners = actionListeners[actionType];
+  if (listeners && listeners.size > 0) {
+    listeners.forEach((listener) => listener(target));
+    return true;
+  }
+  return false;
+}
+
+// Hook to register action handlers
+export function useHandbookActionHandler(
+  actionType: string,
+  handler: (target: string) => void
+) {
+  useEffect(() => {
+    return subscribeToAction(actionType, handler);
+  }, [actionType, handler]);
+}
 
 type ActionHandler = (action: string) => void;
 
 export function useHandbookActionDispatcher(): ActionHandler {
   const navigate = useNavigate();
 
-  return (action: string) => {
+  return useCallback((action: string) => {
     if (!action) return;
 
     // Parse action type
@@ -52,19 +86,27 @@ export function useHandbookActionDispatcher(): ActionHandler {
         break;
 
       case "open":
-        // Modal/sheet/panel opening - MVP placeholder
-        toast({
-          title: "Action not wired yet",
-          description: `open:${target}`,
-        });
+        // Try to emit to registered handlers
+        if (!emitAction("open", target)) {
+          // Fallback: try specific sub-types
+          const [subType, name] = target.split("/");
+          if (!emitAction(`open:${subType}`, name || target)) {
+            toast({
+              title: "Action not available",
+              description: `This feature (${target}) is not available on this page`,
+            });
+          }
+        }
         break;
 
       case "do":
-        // Custom actions - MVP placeholder
-        toast({
-          title: "Action not wired yet",
-          description: `do:${target}`,
-        });
+        // Try to emit to registered handlers
+        if (!emitAction("do", target)) {
+          toast({
+            title: "Action not available",
+            description: `This action (${target}) is not available on this page`,
+          });
+        }
         break;
 
       default:
@@ -74,5 +116,5 @@ export function useHandbookActionDispatcher(): ActionHandler {
           description: action,
         });
     }
-  };
+  }, [navigate]);
 }

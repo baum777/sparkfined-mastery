@@ -15,7 +15,8 @@
           "title": "Open Entry Form",
           "userAction": "Click 'Journal Entry' button in header",
           "systemBehavior": "Opens the journal entry modal with all sections",
-          "outcome": "Ready to document your trade"
+          "outcome": "Ready to document your trade",
+          "cta": { "label": "New Entry", "action": "open:modal/journal-entry" }
         },
         {
           "id": "fill-basics",
