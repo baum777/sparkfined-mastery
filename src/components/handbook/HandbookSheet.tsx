@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,8 +10,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useHandbookPanel } from "@/hooks/useHandbookPanel";
 import { useHandbookActionDispatcher } from "@/lib/handbook/dispatchHandbookAction";
-import { ChevronDown, ChevronRight, BookOpen, CheckCircle2, Circle, Keyboard, AlertTriangle, BookText, ExternalLink } from "lucide-react";
-import type { HandbookFlow, HandbookStep, HandbookBranch } from "@/lib/handbook/types";
+import { useHandbookContext, checkGate } from "@/lib/handbook/handbookContext";
+import { ChevronDown, ChevronRight, BookOpen, CheckCircle2, Circle, AlertTriangle, ExternalLink } from "lucide-react";
+import type { HandbookFlow, HandbookStep, HandbookPrerequisite, HandbookPitfall } from "@/lib/handbook/types";
 
 function StepCard({ step, index }: { step: HandbookStep; index: number }) {
   const dispatch = useHandbookActionDispatcher();
@@ -63,6 +64,128 @@ function FlowSection({ flow }: { flow: HandbookFlow }) {
   );
 }
 
+// Checklist tab with dynamic gate checking
+function ChecklistTab({ prerequisites }: { prerequisites: HandbookPrerequisite[] }) {
+  const context = useHandbookContext();
+  const dispatch = useHandbookActionDispatcher();
+
+  if (prerequisites.length === 0) {
+    return (
+      <div className="text-center py-6">
+        <CheckCircle2 className="h-8 w-8 text-brand mx-auto mb-2" />
+        <p className="text-sm text-text-secondary">No prerequisites for this page.</p>
+        <p className="text-xs text-text-tertiary mt-1">You're ready to use all features!</p>
+      </div>
+    );
+  }
+
+  const completed = prerequisites.filter((p) => checkGate(p.gate, context)).length;
+  const total = prerequisites.length;
+  const allComplete = completed === total;
+
+  return (
+    <div className="space-y-3">
+      {/* Progress summary */}
+      <div className="flex items-center justify-between p-3 rounded-lg bg-surface-subtle border border-border-sf-subtle">
+        <div className="flex items-center gap-2">
+          {allComplete ? (
+            <CheckCircle2 className="h-5 w-5 text-brand" />
+          ) : (
+            <Circle className="h-5 w-5 text-text-tertiary" />
+          )}
+          <span className="text-sm font-medium text-text-primary">
+            {allComplete ? "All set!" : "Setup Progress"}
+          </span>
+        </div>
+        <Badge 
+          variant={allComplete ? "default" : "secondary"} 
+          className={allComplete ? "bg-brand text-black" : ""}
+        >
+          {completed}/{total}
+        </Badge>
+      </div>
+
+      {/* Individual prerequisites */}
+      {prerequisites.map((prereq) => {
+        const isSatisfied = checkGate(prereq.gate, context);
+        
+        return (
+          <div 
+            key={prereq.id} 
+            className={`flex items-start gap-3 p-3 rounded-lg border transition-colors ${
+              isSatisfied 
+                ? "bg-brand/5 border-brand/20" 
+                : "bg-surface-subtle border-border-sf-subtle"
+            }`}
+          >
+            {isSatisfied ? (
+              <CheckCircle2 className="h-5 w-5 text-brand mt-0.5 shrink-0" />
+            ) : (
+              <Circle className="h-5 w-5 text-text-tertiary mt-0.5 shrink-0" />
+            )}
+            <div className="flex-1 min-w-0">
+              <p className={`text-sm font-medium ${isSatisfied ? "text-brand" : "text-text-primary"}`}>
+                {prereq.label}
+              </p>
+              {!isSatisfied && prereq.hint && (
+                <p className="text-xs text-text-tertiary mt-0.5">{prereq.hint}</p>
+              )}
+              {isSatisfied && (
+                <p className="text-xs text-brand/70 mt-0.5">Completed</p>
+              )}
+              {!isSatisfied && prereq.cta && (
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="mt-2 h-7 text-xs"
+                  onClick={() => dispatch(prereq.cta!.action)}
+                >
+                  {prereq.cta.label}
+                </Button>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Pitfalls tab with CTA support
+function PitfallsTab({ pitfalls }: { pitfalls: HandbookPitfall[] }) {
+  const dispatch = useHandbookActionDispatcher();
+
+  if (pitfalls.length === 0) {
+    return <p className="text-sm text-text-secondary">No common pitfalls documented.</p>;
+  }
+
+  return (
+    <div className="space-y-2">
+      {pitfalls.map((p, i) => (
+        <div key={i} className="p-3 rounded-lg border border-warning/30 bg-warning/5">
+          <div className="flex items-start gap-2">
+            <AlertTriangle className="h-4 w-4 text-warning mt-0.5 shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-text-primary">{p.problem}</p>
+              <p className="text-xs text-text-secondary mt-1">{p.fix}</p>
+              {p.cta && (
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="mt-2 h-7 text-xs"
+                  onClick={() => dispatch(p.cta!.action)}
+                >
+                  {p.cta.label}
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function HandbookPanelContent() {
   const { spec, isLoading, error, close } = useHandbookPanel();
   const dispatch = useHandbookActionDispatcher();
@@ -109,19 +232,7 @@ function HandbookPanelContent() {
           </TabsContent>
 
           <TabsContent value="checklist" className="mt-0 space-y-2">
-            {spec.prerequisites.length === 0 ? (
-              <p className="text-sm text-text-secondary">No prerequisites for this page.</p>
-            ) : (
-              spec.prerequisites.map((p) => (
-                <div key={p.id} className="flex items-start gap-2 p-2 rounded-lg bg-surface-subtle">
-                  <Circle className="h-4 w-4 mt-0.5 text-text-tertiary" />
-                  <div>
-                    <p className="text-sm text-text-primary">{p.label}</p>
-                    {p.hint && <p className="text-xs text-text-tertiary">{p.hint}</p>}
-                  </div>
-                </div>
-              ))
-            )}
+            <ChecklistTab prerequisites={spec.prerequisites} />
           </TabsContent>
 
           <TabsContent value="shortcuts" className="mt-0 space-y-2">
@@ -134,17 +245,7 @@ function HandbookPanelContent() {
           </TabsContent>
 
           <TabsContent value="pitfalls" className="mt-0 space-y-2">
-            {spec.pitfalls.map((p, i) => (
-              <div key={i} className="p-3 rounded-lg border border-warning/30 bg-warning/5">
-                <div className="flex items-start gap-2">
-                  <AlertTriangle className="h-4 w-4 text-warning mt-0.5" />
-                  <div>
-                    <p className="text-sm font-medium text-text-primary">{p.problem}</p>
-                    <p className="text-xs text-text-secondary mt-1">{p.fix}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+            <PitfallsTab pitfalls={spec.pitfalls} />
           </TabsContent>
 
           <TabsContent value="glossary" className="mt-0 space-y-2">
