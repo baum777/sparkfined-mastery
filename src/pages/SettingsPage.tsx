@@ -14,6 +14,7 @@ import {
   RiskDefaultsSettings,
   AdvancedSettings,
 } from "@/components/settings";
+import { JournalDataSettings } from "@/features/settings";
 
 export default function SettingsPage() {
   return (
@@ -78,6 +79,15 @@ export default function SettingsPage() {
         data-testid="settings-section-monitoring"
       >
         <MonitoringSettings />
+      </SettingsSection>
+
+      {/* Journal Extended Data */}
+      <SettingsSection
+        title="Journal data"
+        description="Configure auto-captured trade enrichments"
+        data-testid="settings-section-journal"
+      >
+        <JournalDataSettings />
       </SettingsSection>
 
       {/* Token Usage */}
