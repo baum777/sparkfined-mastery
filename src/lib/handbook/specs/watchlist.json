@@ -1,0 +1,77 @@
+{
+  "id": "watchlist",
+  "route": "/watchlist",
+  "title": "Watchlist",
+  "purpose": "Track tokens you're interested in — monitor prices and trends at a glance.",
+  "prerequisites": [],
+  "flows": [
+    {
+      "id": "add-token",
+      "title": "Add Token to Watchlist",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "open-add",
+          "title": "Open Quick Add",
+          "userAction": "Click '+ Add Token' button",
+          "systemBehavior": "Opens token search input",
+          "outcome": "Ready to search for tokens"
+        },
+        {
+          "id": "search",
+          "title": "Search Token",
+          "userAction": "Type token name or address",
+          "systemBehavior": "Shows matching results",
+          "outcome": "Find the token you want"
+        },
+        {
+          "id": "add",
+          "title": "Add to List",
+          "userAction": "Click on token or press Add",
+          "systemBehavior": "Token appears in watchlist",
+          "outcome": "Now tracking this token"
+        }
+      ]
+    },
+    {
+      "id": "view-details",
+      "title": "View Token Details",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "click-token",
+          "title": "Click Token Card",
+          "userAction": "Click on any watchlist token",
+          "systemBehavior": "Opens detail view with chart preview",
+          "outcome": "See price, volume, and trend"
+        },
+        {
+          "id": "open-chart",
+          "title": "Open Full Chart",
+          "userAction": "Click 'Open Chart' button",
+          "systemBehavior": "Navigates to Chart page with token loaded",
+          "outcome": "Ready for detailed analysis",
+          "cta": { "label": "Open Chart", "action": "nav:/chart" }
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" },
+    { "keys": "/", "action": "Focus search" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Token not found",
+      "fix": "Try pasting the full contract address"
+    },
+    {
+      "problem": "Price not updating",
+      "fix": "Check your internet connection"
+    }
+  ],
+  "glossary": [
+    { "term": "Watchlist", "meaning": "Your curated list of tokens to monitor" },
+    { "term": "Trend", "meaning": "The general direction of price movement (up, down, sideways)" }
+  ]
+}

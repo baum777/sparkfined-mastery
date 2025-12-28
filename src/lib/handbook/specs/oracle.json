@@ -1,0 +1,65 @@
+{
+  "id": "oracle",
+  "route": "/oracle",
+  "title": "Oracle",
+  "purpose": "AI-powered insights and pattern recognition from your trading data.",
+  "prerequisites": [
+    {
+      "id": "has-entries",
+      "label": "Log some trades first",
+      "gate": "hasEntries",
+      "hint": "Oracle needs trading data to generate insights",
+      "cta": { "label": "Open Journal", "action": "nav:/journal" }
+    }
+  ],
+  "flows": [
+    {
+      "id": "view-insights",
+      "title": "View Insights",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "browse",
+          "title": "Browse Insights",
+          "userAction": "Scroll through insight cards",
+          "systemBehavior": "Shows AI-generated patterns and observations",
+          "outcome": "Discover trading patterns"
+        },
+        {
+          "id": "read-detail",
+          "title": "Read Detail",
+          "userAction": "Click on an insight card",
+          "systemBehavior": "Expands with full explanation and data",
+          "outcome": "Understand the insight deeply"
+        }
+      ]
+    },
+    {
+      "id": "filter-insights",
+      "title": "Filter Insights",
+      "level": "advanced",
+      "steps": [
+        {
+          "id": "apply-filter",
+          "title": "Apply Filters",
+          "userAction": "Use filter dropdowns",
+          "systemBehavior": "Narrows insights by category or date",
+          "outcome": "Focus on relevant insights"
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "No insights showing",
+      "fix": "Log more trades — Oracle needs data to find patterns"
+    }
+  ],
+  "glossary": [
+    { "term": "Insight", "meaning": "An AI-generated observation about your trading patterns" },
+    { "term": "Pattern", "meaning": "A recurring behavior or outcome in your trades" }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "id": "settings",
+  "route": "/settings",
+  "title": "Settings",
+  "purpose": "Configure your trading environment — wallets, notifications, chart preferences, and data management.",
+  "prerequisites": [],
+  "flows": [
+    {
+      "id": "connect-wallet",
+      "title": "Connect Wallet",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "find-section",
+          "title": "Find Connected Wallets",
+          "userAction": "Scroll to 'Connected Wallets' section",
+          "systemBehavior": "Shows wallet connection UI",
+          "outcome": "Ready to connect"
+        },
+        {
+          "id": "add-wallet",
+          "title": "Add Wallet",
+          "userAction": "Click 'Connect' and choose wallet type",
+          "systemBehavior": "Initiates connection flow",
+          "outcome": "Wallet linked to your account"
+        }
+      ]
+    },
+    {
+      "id": "configure-notifications",
+      "title": "Configure Notifications",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "open-notifications",
+          "title": "Open Notifications Section",
+          "userAction": "Click on 'Notifications' section",
+          "systemBehavior": "Shows notification toggles",
+          "outcome": "See all notification options"
+        },
+        {
+          "id": "toggle-settings",
+          "title": "Toggle Settings",
+          "userAction": "Enable/disable notification types",
+          "systemBehavior": "Saves preferences immediately",
+          "outcome": "Notifications customized"
+        }
+      ]
+    },
+    {
+      "id": "export-data",
+      "title": "Export/Import Data",
+      "level": "advanced",
+      "steps": [
+        {
+          "id": "find-export",
+          "title": "Find Data Export",
+          "userAction": "Scroll to 'Data Export' section",
+          "systemBehavior": "Shows export options",
+          "outcome": "Ready to backup data"
+        },
+        {
+          "id": "download",
+          "title": "Download Backup",
+          "userAction": "Click 'Export' button",
+          "systemBehavior": "Generates and downloads JSON file",
+          "outcome": "Data safely backed up"
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Settings not saving",
+      "fix": "Check browser storage permissions and try refreshing"
+    },
+    {
+      "problem": "Wallet disconnected unexpectedly",
+      "fix": "Re-connect wallet and check for browser extension updates"
+    }
+  ],
+  "glossary": [
+    { "term": "RPC", "meaning": "Remote Procedure Call — how the app communicates with blockchain" },
+    { "term": "Export", "meaning": "Download your data as a file for backup or transfer" }
+  ]
+}

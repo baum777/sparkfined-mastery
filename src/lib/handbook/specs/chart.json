@@ -1,0 +1,93 @@
+{
+  "id": "chart",
+  "route": "/chart",
+  "title": "Chart",
+  "purpose": "Analyze price action with professional charting tools and replay historical trades.",
+  "prerequisites": [
+    {
+      "id": "token-selected",
+      "label": "Select a token",
+      "gate": "hasSelectedToken",
+      "hint": "Choose a token from watchlist or search"
+    }
+  ],
+  "flows": [
+    {
+      "id": "basic-charting",
+      "title": "Basic Charting",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "select-token",
+          "title": "Select Token",
+          "userAction": "Use search or pick from watchlist",
+          "systemBehavior": "Loads chart with price data",
+          "outcome": "Chart displays selected token"
+        },
+        {
+          "id": "change-timeframe",
+          "title": "Change Timeframe",
+          "userAction": "Click timeframe buttons (1m, 5m, 1h, etc.)",
+          "systemBehavior": "Reloads candles for selected interval",
+          "outcome": "View different time perspectives"
+        },
+        {
+          "id": "zoom-pan",
+          "title": "Zoom & Pan",
+          "userAction": "Scroll to zoom, drag to pan",
+          "systemBehavior": "Adjusts visible range",
+          "outcome": "Focus on specific price areas"
+        }
+      ]
+    },
+    {
+      "id": "replay-mode",
+      "title": "Replay Historical Data",
+      "level": "advanced",
+      "steps": [
+        {
+          "id": "enter-replay",
+          "title": "Enter Replay Mode",
+          "userAction": "Click 'Replay' button",
+          "systemBehavior": "Switches to replay controls",
+          "outcome": "Ready to review past price action",
+          "cta": { "label": "Open Replay", "action": "nav:/chart/replay" }
+        },
+        {
+          "id": "set-date",
+          "title": "Set Replay Date",
+          "userAction": "Pick a historical date/time",
+          "systemBehavior": "Loads candles up to that point",
+          "outcome": "Chart shows historical state"
+        },
+        {
+          "id": "play-forward",
+          "title": "Play Forward",
+          "userAction": "Press play to advance candles",
+          "systemBehavior": "Reveals candles one by one",
+          "outcome": "Simulate real-time trading decisions"
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" },
+    { "keys": "Space", "action": "Play/Pause replay" },
+    { "keys": "←/→", "action": "Step back/forward one candle" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Chart not loading",
+      "fix": "Check internet connection and try refreshing"
+    },
+    {
+      "problem": "Candles look wrong",
+      "fix": "Verify you're on the correct timeframe"
+    }
+  ],
+  "glossary": [
+    { "term": "Candle", "meaning": "A bar showing open, high, low, close prices for a time period" },
+    { "term": "Timeframe", "meaning": "The duration each candle represents (1m, 5m, 1h, etc.)" },
+    { "term": "Replay", "meaning": "Mode to review historical price action step by step" }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "id": "alerts",
+  "route": "/alerts",
+  "title": "Alerts",
+  "purpose": "Set price alerts to never miss a trading opportunity or exit signal.",
+  "prerequisites": [],
+  "flows": [
+    {
+      "id": "create-alert",
+      "title": "Create Alert",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "open-quick-create",
+          "title": "Open Quick Create",
+          "userAction": "Click '+ New Alert' button",
+          "systemBehavior": "Opens alert creation form",
+          "outcome": "Ready to set alert conditions"
+        },
+        {
+          "id": "set-conditions",
+          "title": "Set Conditions",
+          "userAction": "Choose token, price, and direction",
+          "systemBehavior": "Validates input and previews alert",
+          "outcome": "Alert conditions defined"
+        },
+        {
+          "id": "save-alert",
+          "title": "Save Alert",
+          "userAction": "Click 'Create' or 'Save'",
+          "systemBehavior": "Alert becomes active",
+          "outcome": "You'll be notified when triggered"
+        }
+      ]
+    },
+    {
+      "id": "manage-alerts",
+      "title": "Manage Alerts",
+      "level": "basic",
+      "steps": [
+        {
+          "id": "view-list",
+          "title": "View Alert List",
+          "userAction": "Browse active alerts",
+          "systemBehavior": "Shows all alerts with status",
+          "outcome": "See all your price triggers"
+        },
+        {
+          "id": "edit-delete",
+          "title": "Edit or Delete",
+          "userAction": "Click on alert to edit, or swipe/click delete",
+          "systemBehavior": "Opens edit form or confirms deletion",
+          "outcome": "Alerts updated as needed"
+        }
+      ]
+    }
+  ],
+  "shortcuts": [
+    { "keys": "?", "action": "Toggle this handbook panel" },
+    { "keys": "N", "action": "New alert" }
+  ],
+  "pitfalls": [
+    {
+      "problem": "Alert not triggering",
+      "fix": "Ensure the app is running and notifications are enabled"
+    },
+    {
+      "problem": "Too many notifications",
+      "fix": "Review and consolidate overlapping alerts"
+    }
+  ],
+  "glossary": [
+    { "term": "Trigger", "meaning": "When price meets alert conditions and notification is sent" },
+    { "term": "Active", "meaning": "Alert is monitoring and ready to trigger" },
+    { "term": "Expired", "meaning": "Alert reached its end date without triggering" }
+  ]
+}
