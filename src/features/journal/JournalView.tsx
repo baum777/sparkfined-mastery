@@ -83,7 +83,7 @@ export function JournalView({
 
       {/* Tab Content */}
       <TabsContent value="journal" className="mt-4">
-        <ConfirmedView count={confirmedCount} />
+        <ConfirmedView />
       </TabsContent>
 
       <TabsContent value="pending" className="mt-4">
