@@ -87,7 +87,7 @@ export function JournalView({
       </TabsContent>
 
       <TabsContent value="pending" className="mt-4">
-        <PendingView count={pendingCount} />
+        <PendingView />
       </TabsContent>
 
       <TabsContent value="logbook" className="mt-4">
