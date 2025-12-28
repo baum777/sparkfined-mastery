@@ -1,4 +1,5 @@
 import { useSyncExternalStore, useCallback } from "react";
+import { notifyContextChange } from "@/lib/handbook/handbookContext";
 import type {
   AutoCapturedEntry,
   ArchivedEntry,
@@ -47,6 +48,8 @@ const listeners = new Set<() => void>();
 
 function emitChange() {
   listeners.forEach((listener) => listener());
+  // Notify handbook context that entries may have changed
+  notifyContextChange();
 }
 
 function subscribe(listener: () => void) {
