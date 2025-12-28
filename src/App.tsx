@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { AppShell } from "@/features/shell";
+import { HandbookPanelProvider } from "@/hooks/useHandbookPanel";
+import { HandbookSheet } from "@/components/handbook";
 import Dashboard from "./pages/Dashboard";
 import Journal from "./pages/Journal";
 import Learn from "./pages/Learn";
@@ -14,6 +16,7 @@ import SettingsPage from "./pages/SettingsPage";
 import Watchlist from "./pages/Watchlist";
 import Oracle from "./pages/Oracle";
 import Replay from "./pages/Replay";
+import Handbook from "./pages/Handbook";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,27 +28,31 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route element={<AppShell />}>
-              {/* Primary tabs */}
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/journal" element={<Journal />} />
-              <Route path="/lessons" element={<Learn />} />
-              <Route path="/chart" element={<Chart />} />
-              <Route path="/chart/replay" element={<Replay />} />
-              <Route path="/alerts" element={<Alerts />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              {/* Secondary tabs (Advanced) */}
-              <Route path="/watchlist" element={<Watchlist />} />
-              <Route path="/oracle" element={<Oracle />} />
-              {/* Legacy /replay redirect to /chart/replay */}
-              <Route path="/replay" element={<Replay />} />
-              {/* Alias: /learn redirects to /lessons */}
-              <Route path="/learn" element={<Learn />} />
-            </Route>
-            {/* Catch-all for unknown routes */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <HandbookPanelProvider>
+            <HandbookSheet />
+            <Routes>
+              <Route element={<AppShell />}>
+                {/* Primary tabs */}
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/journal" element={<Journal />} />
+                <Route path="/lessons" element={<Learn />} />
+                <Route path="/chart" element={<Chart />} />
+                <Route path="/chart/replay" element={<Replay />} />
+                <Route path="/alerts" element={<Alerts />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                {/* Secondary tabs (Advanced) */}
+                <Route path="/watchlist" element={<Watchlist />} />
+                <Route path="/oracle" element={<Oracle />} />
+                <Route path="/handbook" element={<Handbook />} />
+                {/* Legacy /replay redirect to /chart/replay */}
+                <Route path="/replay" element={<Replay />} />
+                {/* Alias: /learn redirects to /lessons */}
+                <Route path="/learn" element={<Learn />} />
+              </Route>
+              {/* Catch-all for unknown routes */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </HandbookPanelProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
