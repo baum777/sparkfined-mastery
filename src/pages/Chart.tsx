@@ -1,18 +1,15 @@
 import { useState, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { TrendingUp } from "lucide-react";
 import { ChartTopBar } from "@/components/chart/ChartTopBar";
 import { ChartSidebar } from "@/components/chart/ChartSidebar";
-import { ChartRightPanel } from "@/components/chart/ChartRightPanel";
-import { ChartBottomTabs } from "@/components/chart/ChartBottomTabs";
+import { ChartBottomPanels } from "@/components/chart/ChartBottomPanels";
 import { ChartReplayControls } from "@/components/chart/ChartReplayControls";
-import { ChartToolbar } from "@/components/chart";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
 export default function Chart() {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
 
@@ -20,6 +17,7 @@ export default function Chart() {
   const [selectedMarket, setSelectedMarket] = useState("BTC/USD");
   const [selectedTimeframe, setSelectedTimeframe] = useState("1H");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [tokenSource, setTokenSource] = useState<"watchlist" | "recent">("watchlist");
   
   // Replay state
   const isReplayMode = searchParams.get("replay") === "true";
@@ -95,17 +93,14 @@ export default function Chart() {
         onToggleReplay={handleToggleReplay}
         onMenuClick={() => setSidebarOpen(true)}
         showMenuButton={isMobile}
+        tokenSource={tokenSource}
+        onTokenSourceChange={setTokenSource}
       />
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden p-3">
         {/* Chart Area - Full Width */}
         <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border bg-background">
-          {/* Toolbar */}
-          <div className="border-b border-border p-2">
-            <ChartToolbar />
-          </div>
-
           {/* Replay Controls (when active) */}
           {isReplayMode && (
             <div className="border-b border-border p-3">
@@ -156,8 +151,8 @@ export default function Chart() {
             </div>
           </div>
 
-          {/* Bottom Tabs */}
-          <ChartBottomTabs symbol={selectedMarket} />
+          {/* Bottom Panels - Side by Side */}
+          <ChartBottomPanels symbol={selectedMarket} />
         </div>
       </div>
 
