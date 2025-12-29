@@ -8,10 +8,14 @@ import { ChartReplayControls } from "@/components/chart/ChartReplayControls";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { useWatchlist } from "@/features/watchlist/useWatchlist";
+import { useRecentlyViewed } from "@/features/watchlist/useRecentlyViewed";
 
 export default function Chart() {
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
+  const { items: watchlistItems } = useWatchlist();
+  const { items: recentTokens, addToken } = useRecentlyViewed();
 
   // State
   const [selectedMarket, setSelectedMarket] = useState("BTC/USD");
@@ -21,6 +25,12 @@ export default function Chart() {
   const [showTokenBanner, setShowTokenBanner] = useState(() => 
     localStorage.getItem("chartShowTokenBanner") !== "false"
   );
+
+  // Track recently viewed tokens
+  useEffect(() => {
+    const symbol = selectedMarket.split("/")[0];
+    addToken(symbol, symbol);
+  }, [selectedMarket, addToken]);
 
   // Sync with localStorage changes (e.g. from Settings)
   useEffect(() => {
@@ -71,6 +81,10 @@ export default function Chart() {
     setCurrentTime((prev) => Math.min(replayDuration, prev + 10));
   }, []);
 
+  const handleTokenSelect = useCallback((symbol: string) => {
+    setSelectedMarket(`${symbol}/USD`);
+  }, []);
+
   // Keyboard shortcuts
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -108,6 +122,10 @@ export default function Chart() {
         tokenSource={tokenSource}
         onTokenSourceChange={setTokenSource}
         showTokenBanner={showTokenBanner}
+        watchlistItems={watchlistItems}
+        recentTokens={recentTokens}
+        selectedMarket={selectedMarket}
+        onTokenSelect={handleTokenSelect}
       />
 
       {/* Main Content */}
