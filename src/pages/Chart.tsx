@@ -40,7 +40,7 @@ export default function Chart() {
   }, [watchlistItems, recentTokens, selectedMarket]);
 
   // Fetch live prices from APIs
-  const { getPrice, isLoading: pricesLoading } = useLivePrices(allSymbols);
+  const { getPrice, isLoading: pricesLoading, refresh } = useLivePrices(allSymbols);
 
   // Merge live prices with watchlist/recent tokens
   const watchlistWithLivePrices: WatchlistItem[] = useMemo(() => {
@@ -171,6 +171,8 @@ export default function Chart() {
         recentTokens={recentWithLivePrices}
         selectedMarket={selectedMarket}
         onTokenSelect={handleTokenSelect}
+        pricesLoading={pricesLoading}
+        onRefreshPrices={refresh}
       />
 
       {/* Main Content */}
