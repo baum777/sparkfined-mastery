@@ -75,13 +75,13 @@ export function AppHeader() {
         <div className="flex items-center gap-2 w-full">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary" />
-            <Input
+          <Input
               type="text"
               placeholder="CA eingeben..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch(searchValue)}
-              className="pl-9 pr-3 bg-surface border-border-sf-subtle text-text-primary placeholder:text-text-tertiary focus:border-brand focus:ring-brand/20"
+              className="pl-9 pr-3 bg-surface border-border-sf-subtle text-text-primary placeholder:text-text-tertiary focus:border-brand focus:ring-1 focus:ring-brand/30 focus:shadow-[0_0_12px_hsl(var(--brand)/0.25)] transition-shadow duration-200"
               data-testid="ca-search-input"
             />
           </div>
