@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -13,18 +13,60 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { secondaryNavItems } from "@/config/navigation";
-import { Flame, MoreHorizontal, HelpCircle, ClipboardPaste, Search } from "lucide-react";
+import { Flame, MoreHorizontal, HelpCircle, ClipboardPaste, Search, Clock, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HandbookTrigger } from "@/components/handbook";
 import { useHandbookPanel } from "@/hooks/useHandbookPanel";
 import { toast } from "sonner";
 
+const HISTORY_KEY = "ca-search-history";
+const MAX_HISTORY = 5;
+
+function getSearchHistory(): string[] {
+  try {
+    const stored = localStorage.getItem(HISTORY_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+function addToHistory(ca: string): string[] {
+  const history = getSearchHistory().filter((item) => item !== ca);
+  const updated = [ca, ...history].slice(0, MAX_HISTORY);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+  return updated;
+}
+
 export function AppHeader() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [showHistory, setShowHistory] = useState(false);
+  const [history, setHistory] = useState<string[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const historyRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const { open: openHandbook } = useHandbookPanel();
+
+  useEffect(() => {
+    setHistory(getSearchHistory());
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        historyRef.current &&
+        !historyRef.current.contains(e.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node)
+      ) {
+        setShowHistory(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSearch = (ca: string) => {
     const trimmed = ca.trim();
@@ -32,7 +74,9 @@ export function AppHeader() {
       toast.error("Keine CA eingegeben");
       return;
     }
-    // Navigate to chart with the CA
+    const updated = addToHistory(trimmed);
+    setHistory(updated);
+    setShowHistory(false);
     navigate(`/chart?token=${encodeURIComponent(trimmed)}`);
   };
 
@@ -49,6 +93,18 @@ export function AppHeader() {
     } catch {
       toast.error("Kein Zugriff auf Zwischenablage");
     }
+  };
+
+  const handleHistoryClick = (ca: string) => {
+    setSearchValue(ca);
+    handleSearch(ca);
+  };
+
+  const removeFromHistory = (ca: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = history.filter((item) => item !== ca);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));
+    setHistory(updated);
   };
 
   return (
@@ -70,20 +126,52 @@ export function AppHeader() {
         </div>
       </div>
 
-      {/* Centered search field */}
+      {/* Centered search field with history dropdown */}
       <div className="flex-1 flex justify-center max-w-md mx-auto">
         <div className="flex items-center gap-2 w-full">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary" />
-          <Input
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary pointer-events-none z-10" />
+            <Input
+              ref={inputRef}
               type="text"
               placeholder="CA eingeben..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
+              onFocus={() => history.length > 0 && setShowHistory(true)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch(searchValue)}
               className="pl-9 pr-3 bg-surface border-border-sf-subtle text-text-primary placeholder:text-text-tertiary focus:border-brand focus:ring-1 focus:ring-brand/30 focus:shadow-[0_0_12px_hsl(var(--brand)/0.25)] transition-shadow duration-200"
               data-testid="ca-search-input"
             />
+            {/* History dropdown */}
+            {showHistory && history.length > 0 && (
+              <div
+                ref={historyRef}
+                className="absolute top-full left-0 right-0 mt-1 bg-elevated border border-border-sf-subtle rounded-lg shadow-lg z-50 overflow-hidden"
+                data-testid="ca-search-history"
+              >
+                <div className="px-3 py-2 text-[10px] uppercase tracking-wider text-text-tertiary border-b border-border-sf-subtle">
+                  Letzte Suchen
+                </div>
+                {history.map((ca) => (
+                  <button
+                    key={ca}
+                    onClick={() => handleHistoryClick(ca)}
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-colors group"
+                    data-testid="ca-history-item"
+                  >
+                    <Clock className="h-3.5 w-3.5 text-text-tertiary shrink-0" />
+                    <span className="truncate flex-1 text-left font-mono text-xs">{ca}</span>
+                    <button
+                      onClick={(e) => removeFromHistory(ca, e)}
+                      className="opacity-0 group-hover:opacity-100 p-0.5 hover:text-danger transition-opacity"
+                      title="Entfernen"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <Button
             variant="outline"
