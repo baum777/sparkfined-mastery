@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
@@ -10,17 +10,46 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { secondaryNavItems } from "@/config/navigation";
-import { Flame, MoreHorizontal, HelpCircle } from "lucide-react";
+import { Flame, MoreHorizontal, HelpCircle, ClipboardPaste, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HandbookTrigger } from "@/components/handbook";
 import { useHandbookPanel } from "@/hooks/useHandbookPanel";
+import { toast } from "sonner";
 
 export function AppHeader() {
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
   const { open: openHandbook } = useHandbookPanel();
+
+  const handleSearch = (ca: string) => {
+    const trimmed = ca.trim();
+    if (!trimmed) {
+      toast.error("Keine CA eingegeben");
+      return;
+    }
+    // Navigate to chart with the CA
+    navigate(`/chart?token=${encodeURIComponent(trimmed)}`);
+  };
+
+  const handlePasteAndSearch = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      const trimmed = text.trim();
+      if (trimmed) {
+        setSearchValue(trimmed);
+        handleSearch(trimmed);
+      } else {
+        toast.error("Zwischenablage ist leer");
+      }
+    } catch {
+      toast.error("Kein Zugriff auf Zwischenablage");
+    }
+  };
 
   return (
     <header className="nav-header flex items-center justify-between gap-4 px-4 md:px-6">
@@ -38,6 +67,34 @@ export function AppHeader() {
           <span className="text-lg font-semibold text-text-primary tracking-tight">
             Sparkfined
           </span>
+        </div>
+      </div>
+
+      {/* Centered search field */}
+      <div className="flex-1 flex justify-center max-w-md mx-auto">
+        <div className="flex items-center gap-2 w-full">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary" />
+            <Input
+              type="text"
+              placeholder="CA eingeben..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch(searchValue)}
+              className="pl-9 pr-3 bg-surface border-border-sf-subtle text-text-primary placeholder:text-text-tertiary focus:border-brand focus:ring-brand/20"
+              data-testid="ca-search-input"
+            />
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handlePasteAndSearch}
+            className="shrink-0 border-border-sf-subtle text-text-secondary hover:text-brand hover:border-brand hover:bg-surface-hover"
+            title="CA einfügen & suchen"
+            data-testid="paste-search-btn"
+          >
+            <ClipboardPaste className="h-4 w-4" />
+          </Button>
         </div>
       </div>
 
