@@ -1,4 +1,4 @@
-import { Menu, Download, Settings2, Play, List, Clock, TrendingUp, TrendingDown } from "lucide-react";
+import { Menu, Download, Settings2, Play, List, Clock, TrendingUp, TrendingDown, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -24,6 +24,8 @@ interface ChartTopBarProps {
   recentTokens?: RecentlyViewedToken[];
   selectedMarket?: string;
   onTokenSelect?: (symbol: string) => void;
+  pricesLoading?: boolean;
+  onRefreshPrices?: () => void;
   className?: string;
 }
 
@@ -56,6 +58,8 @@ export function ChartTopBar({
   recentTokens = [],
   selectedMarket,
   onTokenSelect,
+  pricesLoading = false,
+  onRefreshPrices,
   className,
 }: ChartTopBarProps) {
   const displayTokens = tokenSource === "watchlist" 
@@ -102,6 +106,35 @@ export function ChartTopBar({
 
           <div className="h-4 w-px bg-border shrink-0" />
 
+          {/* Live Indicator & Refresh */}
+          <div className="flex items-center gap-1 shrink-0">
+            {pricesLoading ? (
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <RefreshCw className="h-3 w-3 animate-spin" />
+                <span className="hidden sm:inline">Laden...</span>
+              </div>
+            ) : (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={onRefreshPrices}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    data-testid="refresh-prices-btn"
+                  >
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+                    </span>
+                    <span className="hidden sm:inline">Live</span>
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>Preise aktualisieren</TooltipContent>
+              </Tooltip>
+            )}
+          </div>
+
+          <div className="h-4 w-px bg-border shrink-0" />
+
           {/* Token Chips */}
           <div className="flex items-center gap-1.5 overflow-x-auto">
             {displayTokens.length === 0 ? (
@@ -115,6 +148,7 @@ export function ChartTopBar({
                 const change = token.change24h;
                 const isSelected = selectedMarket?.includes(symbol);
                 const isPositive = (change ?? 0) >= 0;
+                const hasLiveData = price !== undefined && price !== null;
 
                 return (
                   <Badge
@@ -128,23 +162,31 @@ export function ChartTopBar({
                     data-testid={`token-chip-${symbol}`}
                   >
                     <span className="font-semibold">{symbol}</span>
-                    {price !== undefined && (
-                      <span className="text-muted-foreground">{formatPrice(price)}</span>
-                    )}
-                    {change !== undefined && (
-                      <span
-                        className={cn(
-                          "flex items-center gap-0.5",
-                          isPositive ? "text-green-500" : "text-red-500"
-                        )}
-                      >
-                        {isPositive ? (
-                          <TrendingUp className="h-2.5 w-2.5" />
-                        ) : (
-                          <TrendingDown className="h-2.5 w-2.5" />
-                        )}
-                        {formatChange(change)}
+                    {pricesLoading && !hasLiveData ? (
+                      <span className="text-muted-foreground">
+                        <RefreshCw className="h-2.5 w-2.5 animate-spin" />
                       </span>
+                    ) : hasLiveData ? (
+                      <>
+                        <span className="text-muted-foreground">{formatPrice(price)}</span>
+                        {change !== undefined && (
+                          <span
+                            className={cn(
+                              "flex items-center gap-0.5",
+                              isPositive ? "text-green-500" : "text-red-500"
+                            )}
+                          >
+                            {isPositive ? (
+                              <TrendingUp className="h-2.5 w-2.5" />
+                            ) : (
+                              <TrendingDown className="h-2.5 w-2.5" />
+                            )}
+                            {formatChange(change)}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
                     )}
                   </Badge>
                 );
