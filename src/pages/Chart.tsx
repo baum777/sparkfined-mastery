@@ -98,18 +98,9 @@ export default function Chart() {
       />
 
       {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Desktop Left Sidebar - Markets */}
-        {!isMobile && (
-          <ChartSidebar
-            selectedMarket={selectedMarket}
-            onMarketSelect={setSelectedMarket}
-            className="w-52 shrink-0"
-          />
-        )}
-
-        {/* Chart Area */}
-        <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 overflow-hidden p-3">
+        {/* Chart Area - Full Width */}
+        <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border bg-background">
           {/* Toolbar */}
           <div className="border-b border-border p-2">
             <ChartToolbar />
@@ -168,11 +159,6 @@ export default function Chart() {
           {/* Bottom Tabs */}
           <ChartBottomTabs symbol={selectedMarket} />
         </div>
-
-        {/* Desktop Right Panel - Tools & Indicators */}
-        {!isMobile && (
-          <ChartRightPanel className="w-56 shrink-0" />
-        )}
       </div>
 
       {/* Mobile Sidebar Sheet */}
