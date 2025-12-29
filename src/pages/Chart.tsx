@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { TrendingUp } from "lucide-react";
 import { ChartTopBar } from "@/components/chart/ChartTopBar";
@@ -16,6 +16,8 @@ export default function Chart() {
   const isMobile = useIsMobile();
   const { items: watchlistItems } = useWatchlist();
   const { items: recentTokens, addToken } = useRecentlyViewed();
+  const addTokenRef = useRef(addToken);
+  addTokenRef.current = addToken;
 
   // State
   const [selectedMarket, setSelectedMarket] = useState("BTC/USD");
@@ -26,11 +28,11 @@ export default function Chart() {
     localStorage.getItem("chartShowTokenBanner") !== "false"
   );
 
-  // Track recently viewed tokens
+  // Track recently viewed tokens - use ref to avoid infinite loop
   useEffect(() => {
     const symbol = selectedMarket.split("/")[0];
-    addToken(symbol, symbol);
-  }, [selectedMarket, addToken]);
+    addTokenRef.current(symbol, symbol);
+  }, [selectedMarket]);
 
   // Sync with localStorage changes (e.g. from Settings)
   useEffect(() => {
