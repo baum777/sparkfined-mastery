@@ -12,6 +12,8 @@ const MOCK_WATCHLIST: WatchlistItem[] = [
     name: 'Bitcoin',
     trend: 'bullish',
     relevance: 85,
+    price: 94250.32,
+    change24h: 2.34,
     addedAt: new Date('2024-01-15'),
   },
   {
@@ -20,6 +22,8 @@ const MOCK_WATCHLIST: WatchlistItem[] = [
     name: 'Ethereum',
     trend: 'neutral',
     relevance: 72,
+    price: 3420.18,
+    change24h: -0.87,
     addedAt: new Date('2024-01-18'),
   },
   {
@@ -27,7 +31,18 @@ const MOCK_WATCHLIST: WatchlistItem[] = [
     symbol: 'SOL',
     name: 'Solana',
     trend: 'bearish',
+    price: 189.45,
+    change24h: -3.21,
     addedAt: new Date('2024-01-20'),
+  },
+  {
+    id: '4',
+    symbol: 'DOGE',
+    name: 'Dogecoin',
+    trend: 'bullish',
+    price: 0.3215,
+    change24h: 5.67,
+    addedAt: new Date('2024-01-22'),
   },
 ];
 
