@@ -5,6 +5,8 @@ import { ChartTopBar } from "@/components/chart/ChartTopBar";
 import { ChartSidebar } from "@/components/chart/ChartSidebar";
 import { ChartBottomPanels } from "@/components/chart/ChartBottomPanels";
 import { ChartReplayControls } from "@/components/chart/ChartReplayControls";
+import { ChartRightPanel } from "@/components/chart/ChartRightPanel";
+import { ChartFooter } from "@/components/chart/ChartFooter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -132,7 +134,7 @@ export default function Chart() {
 
       {/* Main Content */}
       <div className="flex flex-1 overflow-hidden p-3">
-        {/* Chart Area - Full Width */}
+        {/* Chart Area */}
         <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border bg-background">
           {/* Replay Controls (when active) */}
           {isReplayMode && (
@@ -184,9 +186,15 @@ export default function Chart() {
             </div>
           </div>
 
-          {/* Bottom Panels - Side by Side */}
+          {/* Bottom Panels - Swipeable */}
           <ChartBottomPanels symbol={selectedMarket} />
+          
+          {/* Footer with Pattern Library */}
+          <ChartFooter />
         </div>
+
+        {/* Right Panel - Tools/Indicators/Patterns */}
+        {!isMobile && <ChartRightPanel />}
       </div>
 
       {/* Mobile Sidebar Sheet */}
