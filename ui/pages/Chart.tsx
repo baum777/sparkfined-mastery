@@ -9,11 +9,17 @@ import { ChartToolbar } from "@/components/chart";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ChartCanvas } from "@/features/chart/ChartCanvas";
+import { useRecentlyViewed, useWatchlist } from "@/features/watchlist";
 
 export default function Chart() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
+
+  // Recently Viewed & Watchlist
+  const { items: recentlyViewed, addToken } = useRecentlyViewed();
+  const { items: watchlistItems } = useWatchlist();
+  const [tokenListMode, setTokenListMode] = useState<'watchlist' | 'recent'>('watchlist');
 
   // State
   const [selectedMarket, setSelectedMarket] = useState(() => {
@@ -25,6 +31,14 @@ export default function Chart() {
   // Tools & Indicators State
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [activeIndicators, setActiveIndicators] = useState<string[]>(["sma", "volume"]);
+
+  // Track viewed tokens
+  useEffect(() => {
+    if (selectedMarket) {
+      const name = selectedMarket.split('/')[0];
+      addToken(selectedMarket, name);
+    }
+  }, [selectedMarket, addToken]);
 
   const handleIndicatorToggle = useCallback((indicatorId: string) => {
     setActiveIndicators((prev) => {
@@ -117,6 +131,11 @@ export default function Chart() {
         onToggleReplay={handleToggleReplay}
         onMenuClick={() => setSidebarOpen(true)}
         showMenuButton={isMobile}
+        tokenListMode={tokenListMode}
+        onTokenListModeChange={setTokenListMode}
+        watchlistItems={watchlistItems}
+        recentlyViewed={recentlyViewed}
+        onTokenSelect={(symbol) => setSelectedMarket(symbol)}
       />
 
       {/* Main Content */}

@@ -8,3 +8,9 @@ export interface WatchlistItem {
   relevance?: number; // 0-100 percentage
   addedAt: Date;
 }
+
+export interface RecentlyViewedToken {
+  symbol: string;
+  name: string;
+  viewedAt: Date;
+}
