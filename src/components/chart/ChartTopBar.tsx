@@ -17,6 +17,7 @@ interface ChartTopBarProps {
   showMenuButton?: boolean;
   tokenSource?: "watchlist" | "recent";
   onTokenSourceChange?: (source: "watchlist" | "recent") => void;
+  showTokenBanner?: boolean;
   className?: string;
 }
 
@@ -31,6 +32,7 @@ export function ChartTopBar({
   showMenuButton = false,
   tokenSource = "watchlist",
   onTokenSourceChange,
+  showTokenBanner = true,
   className,
 }: ChartTopBarProps) {
   return (
@@ -55,32 +57,34 @@ export function ChartTopBar({
           </Button>
         )}
         
-        <ToggleGroup
-          type="single"
-          value={tokenSource}
-          onValueChange={(value) => value && onTokenSourceChange?.(value as "watchlist" | "recent")}
-          className="h-8"
-          data-testid="chart-token-source-toggle"
-        >
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <ToggleGroupItem value="watchlist" className="h-8 px-2.5 text-xs gap-1.5">
-                <List className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Watchlist</span>
-              </ToggleGroupItem>
-            </TooltipTrigger>
-            <TooltipContent>Tokens from your watchlist</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <ToggleGroupItem value="recent" className="h-8 px-2.5 text-xs gap-1.5">
-                <Clock className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Recent</span>
-              </ToggleGroupItem>
-            </TooltipTrigger>
-            <TooltipContent>Recently viewed tokens</TooltipContent>
-          </Tooltip>
-        </ToggleGroup>
+        {showTokenBanner && (
+          <ToggleGroup
+            type="single"
+            value={tokenSource}
+            onValueChange={(value) => value && onTokenSourceChange?.(value as "watchlist" | "recent")}
+            className="h-8"
+            data-testid="chart-token-source-toggle"
+          >
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <ToggleGroupItem value="watchlist" className="h-8 px-2.5 text-xs gap-1.5">
+                  <List className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Watchlist</span>
+                </ToggleGroupItem>
+              </TooltipTrigger>
+              <TooltipContent>Tokens from your watchlist</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <ToggleGroupItem value="recent" className="h-8 px-2.5 text-xs gap-1.5">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Recent</span>
+                </ToggleGroupItem>
+              </TooltipTrigger>
+              <TooltipContent>Recently viewed tokens</TooltipContent>
+            </Tooltip>
+          </ToggleGroup>
+        )}
       </div>
 
       {/* Center: Timeframes */}

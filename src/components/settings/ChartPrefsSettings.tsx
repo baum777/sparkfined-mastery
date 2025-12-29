@@ -1,4 +1,4 @@
-import { BarChart3, Clock, Palette } from "lucide-react";
+import { BarChart3, Clock, Palette, ListFilter } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -20,6 +20,9 @@ export function ChartPrefsSettings() {
   const [candleStyle, setCandleStyle] = useState(() => 
     localStorage.getItem("chartCandleStyle") || "candles"
   );
+  const [showTokenBanner, setShowTokenBanner] = useState(() => 
+    localStorage.getItem("chartShowTokenBanner") !== "false"
+  );
 
   useEffect(() => {
     localStorage.setItem("chartDefaultTimeframe", defaultTimeframe);
@@ -32,6 +35,10 @@ export function ChartPrefsSettings() {
   useEffect(() => {
     localStorage.setItem("chartCandleStyle", candleStyle);
   }, [candleStyle]);
+
+  useEffect(() => {
+    localStorage.setItem("chartShowTokenBanner", String(showTokenBanner));
+  }, [showTokenBanner]);
 
   return (
     <div className="space-y-4" data-testid="settings-chart-prefs">
@@ -96,6 +103,23 @@ export function ChartPrefsSettings() {
             <SelectItem value="area">Area</SelectItem>
           </SelectContent>
         </Select>
+      </div>
+
+      {/* Token Banner */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <ListFilter className="h-5 w-5 text-muted-foreground" />
+          <div>
+            <Label htmlFor="show-token-banner" className="text-sm font-medium">Token banner</Label>
+            <p className="text-xs text-muted-foreground">Show Watchlist/Recent toggle in chart</p>
+          </div>
+        </div>
+        <Switch
+          id="show-token-banner"
+          checked={showTokenBanner}
+          onCheckedChange={setShowTokenBanner}
+          data-testid="chart-pref-token-banner"
+        />
       </div>
     </div>
   );

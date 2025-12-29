@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { TrendingUp } from "lucide-react";
 import { ChartTopBar } from "@/components/chart/ChartTopBar";
@@ -18,6 +18,18 @@ export default function Chart() {
   const [selectedTimeframe, setSelectedTimeframe] = useState("1H");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [tokenSource, setTokenSource] = useState<"watchlist" | "recent">("watchlist");
+  const [showTokenBanner, setShowTokenBanner] = useState(() => 
+    localStorage.getItem("chartShowTokenBanner") !== "false"
+  );
+
+  // Sync with localStorage changes (e.g. from Settings)
+  useEffect(() => {
+    const handleStorage = () => {
+      setShowTokenBanner(localStorage.getItem("chartShowTokenBanner") !== "false");
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
   
   // Replay state
   const isReplayMode = searchParams.get("replay") === "true";
@@ -95,6 +107,7 @@ export default function Chart() {
         showMenuButton={isMobile}
         tokenSource={tokenSource}
         onTokenSourceChange={setTokenSource}
+        showTokenBanner={showTokenBanner}
       />
 
       {/* Main Content */}
