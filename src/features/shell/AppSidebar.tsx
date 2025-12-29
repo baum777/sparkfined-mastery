@@ -42,17 +42,17 @@ export function AppSidebar() {
   return (
     <Sidebar 
       collapsible="icon" 
-      className="border-r border-border-sf-subtle bg-elevated"
+      className="max-w-[240px] border-r border-border-sf-subtle bg-elevated"
     >
-      <SidebarHeader className="border-b border-border-sf-subtle p-3">
-        <div className="flex items-center gap-2.5">
+      <SidebarHeader className="border-b border-border-sf-subtle px-4 py-3">
+        <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand shadow-glow-brand">
             <Flame className="h-5 w-5 text-black" />
           </div>
           {!isCollapsed && (
-            <span className="text-lg font-semibold text-text-primary tracking-tight">
+            <h1 className="text-lg font-semibold text-text-primary tracking-tight">
               Sparkfined
-            </span>
+            </h1>
           )}
         </div>
       </SidebarHeader>

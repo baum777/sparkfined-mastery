@@ -7,3 +7,4 @@ export { ChartBottomPanels } from "./ChartBottomPanels";
 export { ChartReplayControls } from "./ChartReplayControls";
 export { ChartTopBar } from "./ChartTopBar";
 export { ChartRightPanel } from "./ChartRightPanel";
+export { ChartFooter } from "./ChartFooter";
