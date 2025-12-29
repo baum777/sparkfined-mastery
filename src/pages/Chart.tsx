@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { TrendingUp } from "lucide-react";
 import { ChartTopBar } from "@/components/chart/ChartTopBar";
@@ -10,6 +10,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { useWatchlist } from "@/features/watchlist/useWatchlist";
 import { useRecentlyViewed } from "@/features/watchlist/useRecentlyViewed";
+import { useLivePrices } from "@/features/watchlist/useLivePrices";
+import type { WatchlistItem, RecentlyViewedToken } from "@/features/watchlist/types";
 
 export default function Chart() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,6 +29,47 @@ export default function Chart() {
   const [showTokenBanner, setShowTokenBanner] = useState(() => 
     localStorage.getItem("chartShowTokenBanner") !== "false"
   );
+
+  // Collect all unique symbols for live price fetching
+  const allSymbols = useMemo(() => {
+    const symbols = new Set<string>();
+    watchlistItems.forEach(item => symbols.add(item.symbol));
+    recentTokens.forEach(token => symbols.add(token.symbol));
+    symbols.add(selectedMarket.split("/")[0]);
+    return Array.from(symbols);
+  }, [watchlistItems, recentTokens, selectedMarket]);
+
+  // Fetch live prices from APIs
+  const { getPrice, isLoading: pricesLoading } = useLivePrices(allSymbols);
+
+  // Merge live prices with watchlist/recent tokens
+  const watchlistWithLivePrices: WatchlistItem[] = useMemo(() => {
+    return watchlistItems.map(item => {
+      const livePrice = getPrice(item.symbol);
+      if (livePrice) {
+        return {
+          ...item,
+          price: livePrice.price,
+          change24h: livePrice.change24h,
+        };
+      }
+      return item;
+    });
+  }, [watchlistItems, getPrice]);
+
+  const recentWithLivePrices: RecentlyViewedToken[] = useMemo(() => {
+    return recentTokens.map(token => {
+      const livePrice = getPrice(token.symbol);
+      if (livePrice) {
+        return {
+          ...token,
+          price: livePrice.price,
+          change24h: livePrice.change24h,
+        };
+      }
+      return token;
+    });
+  }, [recentTokens, getPrice]);
 
   // Track recently viewed tokens - use ref to avoid infinite loop
   useEffect(() => {
@@ -124,8 +167,8 @@ export default function Chart() {
         tokenSource={tokenSource}
         onTokenSourceChange={setTokenSource}
         showTokenBanner={showTokenBanner}
-        watchlistItems={watchlistItems}
-        recentTokens={recentTokens}
+        watchlistItems={watchlistWithLivePrices}
+        recentTokens={recentWithLivePrices}
         selectedMarket={selectedMarket}
         onTokenSelect={handleTokenSelect}
       />
