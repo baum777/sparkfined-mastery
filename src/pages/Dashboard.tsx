@@ -95,7 +95,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-6" data-testid="page-dashboard">
+    <div className="flex flex-col gap-4 py-4 sm:gap-5 md:gap-6 lg:py-6" data-testid="page-dashboard">
       {/* Header with meta counters and primary CTA */}
       <DashboardHeader 
         entriesCount={trades.length}
@@ -103,7 +103,7 @@ export default function Dashboard() {
         onLogEntry={handleLogEntry}
       />
 
-      {/* 5 Horizontal KPI Cards */}
+      {/* 5 Horizontal KPI Cards - responsive scroll on mobile */}
       <DashboardKpiCards
         netPnl={kpiData.netPnl}
         netPnlPercent={kpiData.netPnlPercent}
@@ -134,15 +134,21 @@ export default function Dashboard() {
             onOpenChart={() => navigate("/chart")}
           />
 
-          {/* Primary Cards Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="dashboard-primary-cards">
+          {/* Primary Cards Grid - 1 col mobile, 2 col tablet, 3 col desktop */}
+          <div 
+            className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" 
+            data-testid="dashboard-primary-cards"
+          >
             <HoldingsCard />
             <LastTradesCard />
             <InsightCard isReady={trades.length >= 5} />
           </div>
 
-          {/* Secondary Cards Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3" data-testid="dashboard-secondary-cards">
+          {/* Secondary Cards Grid - 1 col mobile, 2 col tablet+ */}
+          <div 
+            className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2" 
+            data-testid="dashboard-secondary-cards"
+          >
             <JournalSnapshotCard 
               totalEntries={journalData.totalEntries}
               thisWeekEntries={journalData.thisWeekEntries}
@@ -161,7 +167,10 @@ export default function Dashboard() {
 
       {/* Show preview widgets when empty */}
       {!hasTrades && (
-        <div className="grid gap-4 md:grid-cols-2 opacity-60" data-testid="dashboard-preview-widgets">
+        <div 
+          className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 opacity-60" 
+          data-testid="dashboard-preview-widgets"
+        >
           <DailyBiasCard 
             onRefresh={handleRefreshBias}
             isRefreshing={isRefreshingBias}
