@@ -8,7 +8,6 @@ import {
   LastTradesCard,
   InsightCard,
   JournalSnapshotCard,
-  AlertsSnapshotCard,
   DashboardEmptyState,
   DashboardFab,
   DashboardKpiCards,
@@ -134,17 +133,16 @@ export default function Dashboard() {
             onOpenChart={() => navigate("/chart")}
           />
 
-          {/* Primary Cards Grid - 1 col mobile, 2 col tablet, 3 col desktop */}
+          {/* Primary Cards Grid - 1 col mobile, 2 col tablet */}
           <div 
-            className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" 
+            className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2" 
             data-testid="dashboard-primary-cards"
           >
             <HoldingsCard />
             <LastTradesCard />
-            <InsightCard isReady={trades.length >= 5} />
           </div>
 
-          {/* Secondary Cards Grid - 1 col mobile, 2 col tablet+ */}
+          {/* Secondary Cards - Journal + Insights full width */}
           <div 
             className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2" 
             data-testid="dashboard-secondary-cards"
@@ -154,7 +152,7 @@ export default function Dashboard() {
               thisWeekEntries={journalData.thisWeekEntries}
               lastEntryDate={journalData.lastEntryDate}
             />
-            <AlertsSnapshotCard triggeredCount={triggeredAlerts} />
+            <InsightCard isReady={trades.length >= 5} />
           </div>
 
           {/* Recent Entries Footer - Full Width */}
@@ -168,7 +166,7 @@ export default function Dashboard() {
       {/* Show preview widgets when empty */}
       {!hasTrades && (
         <div 
-          className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 opacity-60" 
+          className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 opacity-60" 
           data-testid="dashboard-preview-widgets"
         >
           <DailyBiasCard 
@@ -178,7 +176,6 @@ export default function Dashboard() {
           <HoldingsCard />
           <LastTradesCard />
           <InsightCard isReady={false} />
-          <AlertsSnapshotCard triggeredCount={0} />
         </div>
       )}
 
