@@ -110,7 +110,7 @@ export default function Chart() {
 
   return (
     <div
-      className="flex h-full flex-col"
+      className="flex h-full flex-col px-4 py-4 md:px-6 lg:py-6"
       onKeyDown={handleKeyDown}
       tabIndex={0}
       data-testid="page-chart"

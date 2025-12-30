@@ -42,7 +42,7 @@ export default function Learn() {
   const lockedCount = totalCount - unlockedCount;
 
   return (
-    <div className="flex flex-col gap-6" data-testid="page-learn">
+    <div className="flex flex-col gap-6 px-4 py-4 md:px-6 lg:py-6" data-testid="page-learn">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
