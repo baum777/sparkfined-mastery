@@ -7,9 +7,9 @@ import { MobileBottomNav } from "./MobileBottomNav";
 export function AppShell() {
   return (
     <SidebarProvider defaultOpen>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full overflow-hidden">
         <AppSidebar />
-        <SidebarInset>
+        <SidebarInset className="flex flex-col min-w-0">
           <AppHeader />
           <main className="flex-1 overflow-auto pb-20 md:pb-0 px-4 md:px-6">
             <Outlet />
