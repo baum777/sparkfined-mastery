@@ -22,7 +22,7 @@ export default function Journal() {
   };
 
   return (
-    <div className="flex flex-col gap-6" data-testid="page-journal">
+    <div className="flex flex-col gap-6 px-4 py-4 md:px-6 lg:py-6" data-testid="page-journal">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>

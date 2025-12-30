@@ -18,7 +18,7 @@ import { JournalDataSettings } from "@/features/settings";
 
 export default function SettingsPage() {
   return (
-    <div className="mx-auto max-w-2xl space-y-6" data-testid="page-settings">
+    <div className="mx-auto max-w-2xl space-y-6 px-4 py-4 md:px-6 lg:py-6" data-testid="page-settings">
       {/* Header */}
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-muted">

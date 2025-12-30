@@ -41,7 +41,7 @@ export default function Alerts() {
   const isEmpty = filteredAlerts.length === 0 && filter === 'all';
 
   return (
-    <div className="flex flex-col gap-6" data-testid="page-alerts">
+    <div className="flex flex-col gap-6 px-4 py-4 md:px-6 lg:py-6" data-testid="page-alerts">
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
