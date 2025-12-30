@@ -133,7 +133,7 @@ export default function Chart() {
       />
 
       {/* Main Content */}
-      <div className="flex flex-1 overflow-hidden p-3">
+      <div className="flex flex-1 overflow-hidden">
         {/* Chart Area */}
         <div className="flex flex-1 flex-col overflow-hidden rounded-lg border border-border bg-background">
           {/* Replay Controls (when active) */}
