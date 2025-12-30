@@ -12,6 +12,15 @@ Diese Dokumentation beschreibt die User Interface (UI) und User Experience (UX) 
 
 ---
 
+## 1.2 Umsetzung als 1:1 Übergabe (konkret, code-nah)
+
+Dieses Dokument beschreibt primär das **Zielbild** (Prinzipien, Patterns, Flows).  
+Für eine **direkt ausführbare Übergabe** (Dateipfade, Source-of-Truth Regeln, Ist-Stand pro Page, Token-/Shell-Regeln, Erweiterungs-Checklisten) nutze:
+
+- `docs/UI_UX_ARCHITEKTUR_UEBERGABE_1zu1.md`
+
+---
+
 ## 2. Design System
 
 Das Design System basiert auf **Shadcn UI** (Radix UI Primitives) und **Tailwind CSS**, angepasst für einen modernen Financial-Look.

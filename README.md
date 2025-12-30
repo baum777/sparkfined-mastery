@@ -4,6 +4,12 @@
 
 **URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
+## Dokumentation (Start hier)
+
+- **UI/UX Zielbild**: `docs/UI_UX_ARCHITECTURE.md`
+- **UI/UX Übergabe (1:1 umsetzbar, code-nah)**: `docs/UI_UX_ARCHITEKTUR_UEBERGABE_1zu1.md`
+- **System-/Tab-/Datenflüsse**: `docs/TECHNICAL_SYSTEM_DOCUMENTATION.md`
+
 ## How can I edit this code?
 
 There are several ways of editing your application.
