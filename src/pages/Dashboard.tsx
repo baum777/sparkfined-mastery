@@ -95,7 +95,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-4 md:p-6" data-testid="page-dashboard">
+    <div className="flex flex-col gap-6" data-testid="page-dashboard">
       {/* Header with meta counters and primary CTA */}
       <DashboardHeader 
         entriesCount={trades.length}
