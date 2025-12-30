@@ -24,7 +24,7 @@ export default function Dashboard() {
   
   const triggeredAlerts = alerts.filter(a => a.status === 'triggered').length;
 
-  // Calculate KPIs
+  // Calculate KPIs and Quick Stats
   const kpiData = useMemo(() => {
     if (trades.length === 0) {
       return { 
@@ -35,6 +35,8 @@ export default function Dashboard() {
         todayAmount: 0,
         journalStreak: 0,
         tradeInboxCount: 0,
+        avgPnl: 0,
+        bestPerformer: null as { symbol: string; pnl: number } | null,
       };
     }
 
@@ -43,6 +45,13 @@ export default function Dashboard() {
     const winRate = tradesWithPnL.length > 0 ? (wins.length / tradesWithPnL.length) * 100 : 0;
     
     const netPnl = tradesWithPnL.reduce((sum, t) => sum + parseFloat(t.pnl!), 0);
+    const avgPnl = tradesWithPnL.length > 0 ? netPnl / tradesWithPnL.length : 0;
+    
+    // Find best performer
+    const bestTrade = tradesWithPnL.reduce((best, t) => {
+      const pnl = parseFloat(t.pnl!);
+      return pnl > (best?.pnl || 0) ? { symbol: t.asset, pnl } : best;
+    }, null as { symbol: string; pnl: number } | null);
     
     // Today's trades
     const today = new Date();
@@ -57,6 +66,8 @@ export default function Dashboard() {
       todayAmount: todayTrades.reduce((sum, t) => sum + (parseFloat(t.pnl || "0")), 0),
       journalStreak: 3, // Placeholder - would calculate from consecutive days
       tradeInboxCount: 2, // Placeholder - would come from notifications
+      avgPnl,
+      bestPerformer: bestTrade,
     };
   }, [trades]);
 
@@ -152,7 +163,12 @@ export default function Dashboard() {
               thisWeekEntries={journalData.thisWeekEntries}
               lastEntryDate={journalData.lastEntryDate}
             />
-            <InsightCard isReady={trades.length >= 5} />
+            <InsightCard 
+              isReady={trades.length >= 5} 
+              winRate={kpiData.winRate30d}
+              avgPnl={kpiData.avgPnl}
+              bestPerformer={kpiData.bestPerformer}
+            />
           </div>
 
           {/* Recent Entries Footer - Full Width */}
